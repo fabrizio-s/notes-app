@@ -1,0 +1,18 @@
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Author</th>
+                <th scope="col">Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let note of notesService.notes">
+                <td>{{ note.title }}</td>
+                <td>{{ note.author }}</td>
+                <td>{{ note.date | date: 'HH:mm:ss dd-MM-yyyy' }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
