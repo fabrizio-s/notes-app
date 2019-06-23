@@ -16,12 +16,12 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="note")
-public class Note {
+public class NoteEntity {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
-	private int id;
+	private Long id;
 	
 	@Column(name="title")
 	private String title;
@@ -29,7 +29,7 @@ public class Note {
 	@ManyToOne(cascade= {CascadeType.PERSIST, CascadeType.MERGE,
 						 CascadeType.DETACH, CascadeType.REFRESH})
 	@JoinColumn(name="user_id")
-	private User user;
+	private UserEntity user;
 	
 	@Column(name="body")
 	private String body;
@@ -42,11 +42,11 @@ public class Note {
     @Column(name = "last_modified")
 	private Date lastModified;
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -58,11 +58,11 @@ public class Note {
 		this.title = title;
 	}
 
-	public User getUser() {
+	public UserEntity getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(UserEntity user) {
 		this.user = user;
 	}
 

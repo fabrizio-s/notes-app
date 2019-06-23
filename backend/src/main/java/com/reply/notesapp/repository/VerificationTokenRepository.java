@@ -1,8 +1,8 @@
 package com.reply.notesapp.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.reply.notesapp.entity.VerificationToken;
+import com.reply.notesapp.entity.VerificationTokenEntity;
 
-public interface VerificationTokenRepository extends JpaRepository<VerificationToken, Long> {
-	VerificationToken findByUuid(String uuid);
+public interface VerificationTokenRepository extends JpaRepository<VerificationTokenEntity, Long> {
+	VerificationTokenEntity findByUuid(String uuid);
 }

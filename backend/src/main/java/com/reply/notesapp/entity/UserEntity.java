@@ -13,11 +13,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="user")
-public class User {
+public class UserEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,6 +37,11 @@ public class User {
 	@Column(name = "enabled")
 	private boolean enabled;
 	
+	@OneToMany(mappedBy="user",
+			   cascade= {CascadeType.PERSIST, CascadeType.MERGE,
+						 CascadeType.DETACH, CascadeType.REFRESH})
+	private Collection<NoteEntity> notes;
+	
 	@ManyToMany(fetch = FetchType.LAZY,
 			cascade = {CascadeType.PERSIST,
 					CascadeType.MERGE,
@@ -44,7 +50,7 @@ public class User {
 	@JoinTable(name = "user_role",
 			joinColumns = @JoinColumn(name = "user_id"),
 			inverseJoinColumns = @JoinColumn(name = "role_id"))
-	private Collection<Role> roles;
+	private Collection<RoleEntity> roles;
 
 	public Long getId() {
 		return id;
@@ -86,15 +92,23 @@ public class User {
 		this.enabled = enabled;
 	}
 
-	public Collection<Role> getRoles() {
+	public Collection<NoteEntity> getNotes() {
+		return notes;
+	}
+
+	public void setNotes(Collection<NoteEntity> notes) {
+		this.notes = notes;
+	}
+
+	public Collection<RoleEntity> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(Collection<Role> roles) {
+	public void setRoles(Collection<RoleEntity> roles) {
 		this.roles = roles;
 	}
 	
-	public void addRole(Role role) {
+	public void addRole(RoleEntity role) {
 		if (roles == null) {
 			roles = new ArrayList<>();
 		}

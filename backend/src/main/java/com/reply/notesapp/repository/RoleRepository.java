@@ -1,7 +1,7 @@
 package com.reply.notesapp.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.reply.notesapp.entity.Role;
+import com.reply.notesapp.entity.RoleEntity;
 
-public interface RoleRepository extends JpaRepository<Role, Long> {
+public interface RoleRepository extends JpaRepository<RoleEntity, Long> {
 }

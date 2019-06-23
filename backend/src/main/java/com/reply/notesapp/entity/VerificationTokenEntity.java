@@ -17,7 +17,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="verification_token")
-public class VerificationToken {
+public class VerificationTokenEntity {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,13 +36,13 @@ public class VerificationToken {
             CascadeType.DETACH,
             CascadeType.REFRESH})
     @JoinColumn(name = "user_id")
-    private User user;
+    private UserEntity user;
 
-    public VerificationToken() {
+    public VerificationTokenEntity() {
         this(null);
     }
 
-    public VerificationToken(User user) {
+    public VerificationTokenEntity(UserEntity user) {
         this.user = user;
         createdAt = new Date();
         uuid = UUID.randomUUID().toString();
@@ -72,11 +72,11 @@ public class VerificationToken {
         this.createdAt = createdAt;
     }
 
-    public User getUser() {
+    public UserEntity getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserEntity user) {
         this.user = user;
     }
 	
