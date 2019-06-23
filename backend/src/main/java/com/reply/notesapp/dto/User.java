@@ -1,5 +1,9 @@
 package com.reply.notesapp.dto;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 public class User {
 	
 	private Long id;
@@ -7,6 +11,9 @@ public class User {
 	private String username;
 	
 	private String email;
+	
+	@JsonIgnoreProperties(value = { "user" })
+	private List<Note> notes;
 
 	public Long getId() {
 		return id;
@@ -30,6 +37,14 @@ public class User {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public List<Note> getNotes() {
+		return notes;
+	}
+
+	public void setNotes(List<Note> notes) {
+		this.notes = notes;
 	}
 
 }

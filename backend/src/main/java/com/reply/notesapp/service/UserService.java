@@ -1,6 +1,5 @@
 package com.reply.notesapp.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,9 +12,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.reply.notesapp.dto.Note;
+import com.reply.notesapp.converter.UserConverter;
 import com.reply.notesapp.dto.User;
-import com.reply.notesapp.entity.NoteEntity;
 import com.reply.notesapp.entity.UserEntity;
 import com.reply.notesapp.repository.UserRepository;
 
@@ -27,7 +25,7 @@ public class UserService implements UserDetailsService {
 	private UserRepository userRepository;
 	
 	public List<User> getAllUsers() {
-		return entitiesToDto(userRepository.findAll());
+		return UserConverter.entitiesToDto(userRepository.findAll());
 	}
 	
 	@Override
@@ -44,22 +42,6 @@ public class UserService implements UserDetailsService {
 				true,
 				true,
 				user.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList()));
-	}
-	
-	private User entityToDto(UserEntity entity) {
-		User dto = new User();
-		dto.setId(entity.getId());
-		dto.setUsername(entity.getUsername());
-		dto.setEmail(entity.getEmail());
-		return dto;
-	}
-	
-	private List<User> entitiesToDto(List<UserEntity> entities) {
-		List<User> dtos = new ArrayList<>();
-		for (UserEntity entity : entities) {
-			dtos.add(entityToDto(entity));
-		}
-		return dtos;
 	}
 	
 }

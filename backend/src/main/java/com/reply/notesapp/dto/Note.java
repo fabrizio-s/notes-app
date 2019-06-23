@@ -2,13 +2,16 @@ package com.reply.notesapp.dto;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 public class Note {
 	
 	private Long id;
 	
 	private String title;
 	
-	private Long userId;
+	@JsonIgnoreProperties(value = { "notes" })
+	private User user;
 	
 	private String body;
 	
@@ -32,12 +35,12 @@ public class Note {
 		this.title = title;
 	}
 
-	public Long getUserId() {
-		return userId;
+	public User getUser() {
+		return user;
 	}
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public String getBody() {
