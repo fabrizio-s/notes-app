@@ -1,10 +1,30 @@
 <div class="container">
     <p class="alert alert-success" *ngIf="deleteSuccess">Note deleted successfully!</p>
     <p class="alert alert-danger" *ngIf="error">{{ error.message }}</p>
+    <div class="input-group col-sm-8 col-md-6 col-lg-4 mt-3 mb-3">
+        <div class="input-group-prepend">
+            <div class="input-group-text">
+                <input type="checkbox" [(ngModel)]="enableFilterByTitle"
+                    aria-label="Checkbox for enabling filter by title">
+            </div>
+        </div>
+        <input type="text" class="form-control" [(ngModel)]="filteredTitle" aria-label="Text input to filter by title"
+            placeholder="Title">
+    </div>
+    <div class="input-group col-sm-8 col-md-6 col-lg-4 mt-3 mb-3">
+        <div class="input-group-prepend">
+            <div class="input-group-text">
+                <input type="checkbox" [(ngModel)]="enableFilterByAuthor"
+                    aria-label="Checkbox for enabling filter by author">
+            </div>
+        </div>
+        <input type="text" class="form-control" [(ngModel)]="filteredAuthor" aria-label="Text input to filter by author"
+            placeholder="Author">
+    </div>
     <div class="container">
         <div class="row">
             <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-lg-4 col-xl-4"
-                *ngFor="let note of notesService.notes; let i = index">
+                *ngFor="let note of (notesService.notes | noteFilter:enableFilterByTitle:filteredTitle:enableFilterByAuthor:filteredAuthor ); let i = index">
                 <div class="card bg-light mb-3">
                     <div class="card-header"><em><i>{{ note.title | shorten:27 }}</i></em></div>
                     <div class="card-body text-center">

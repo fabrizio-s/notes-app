@@ -9,9 +9,13 @@ import { HttpClient } from '@angular/common/http';
 })
 export class SearchComponent {
 
+    enableFilterByTitle = false;
+    enableFilterByAuthor = false;
+    filteredTitle = '';
+    filteredAuthor = '';
     deleteSuccess = false;
     error = null;
-    errorHandler = error => {
+    errorHandler = (error: any) => {
         this.error = error;
         setTimeout(() => this.error = null, 4000);
     }
@@ -19,7 +23,7 @@ export class SearchComponent {
     constructor(private notesService: NotesService, private http: HttpClient) {}
 
     deleteNote(index: number, note: {id: number}) {
-        if (confirm("Are you sure you want to delete this note?")) {
+        if (confirm('Are you sure you want to delete this note?')) {
             this.http.delete<{id: number}>('/rest/note/' + note.id).subscribe(
                 deletedNote => {
                     if (this.notesService.notes[index].id === deletedNote.id) {

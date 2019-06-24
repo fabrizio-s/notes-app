@@ -6,9 +6,10 @@ import { HomeComponent } from './home/home.component';
 import { AppRoutingModule } from './app-routing.module';
 import { SearchComponent } from './search/search.component';
 import { SubmitComponent } from './submit/submit.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ShortenPipe } from './shorten.pipe';
+import { NoteFilter } from './note-filter.pipe';
 
 @NgModule({
   declarations: [
@@ -16,12 +17,14 @@ import { ShortenPipe } from './shorten.pipe';
     HomeComponent,
     SearchComponent,
     SubmitComponent,
-    ShortenPipe
+    ShortenPipe,
+    NoteFilter
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule
   ],
   providers: [],
