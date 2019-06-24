@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NotesService } from '../notes.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
     selector: 'app-search',
@@ -8,6 +9,32 @@ import { NotesService } from '../notes.service';
 })
 export class SearchComponent {
 
-    constructor(private notesService: NotesService) {}
+    deleteSuccess = false;
+    error = null;
+    errorHandler = error => {
+        this.error = error;
+        setTimeout(() => this.error = null, 4000);
+    }
+
+    constructor(private notesService: NotesService, private http: HttpClient) {}
+
+    delete(index: number, note: {id: number}) {
+        this.http.delete<{id: number}>('/rest/note/' + note.id).subscribe(
+            deletedNote => {
+                if (this.notesService.notes[index].id === deletedNote.id) {
+                    this.notesService.notes.splice(index, 1);
+                } else {
+                    this.notesService.fetchNotes().subscribe(
+                        notes => {
+                            this.notesService.notes = notes;
+                        },
+                        this.errorHandler
+                    );
+                }
+                this.deleteSuccess = true;
+                setTimeout(() => this.deleteSuccess = false, 4000);
+            }, this.errorHandler
+        );
+    }
 
 }

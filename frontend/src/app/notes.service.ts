@@ -4,18 +4,26 @@ import { HttpClient } from '@angular/common/http';
 @Injectable()
 export class NotesService {
 
-    notes: {title: string, user: any, body: string}[];
+    notes: {id: number, title: string, user: any, body: string}[];
 
     constructor(private http: HttpClient) {
-        this.http.get<{title: string, user: any, body: string}[]>('/rest/note').subscribe(
+        this.loadNotes();
+    }
+
+    addNote(note: {id: number, title: string, user: any, body: string}): void {
+        this.notes.push(note);
+    }
+
+    loadNotes() {
+        this.fetchNotes().subscribe(
             notes => {
                 this.notes = notes;
             }
         );
     }
 
-    addNote(note: {title: string, user: any, body: string}): void {
-        this.notes.push(note);
+    fetchNotes() {
+        return this.http.get<{id: number, title: string, user: any, body: string}[]>('/rest/note');
     }
 
 }

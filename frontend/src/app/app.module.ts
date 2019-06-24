@@ -8,13 +8,15 @@ import { SearchComponent } from './search/search.component';
 import { SubmitComponent } from './submit/submit.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { ShortenPipe } from './shorten.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     SearchComponent,
-    SubmitComponent
+    SubmitComponent,
+    ShortenPipe
   ],
   imports: [
     BrowserModule,

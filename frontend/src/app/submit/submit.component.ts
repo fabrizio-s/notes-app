@@ -16,16 +16,17 @@ export class SubmitComponent {
     constructor(private http: HttpClient, private notesService: NotesService) {}
 
     submit(form: NgForm) {
-        const values: {title: string, user: any, body: string} = {
+        const values: {id: number, title: string, user: any, body: string} = {
+            id: form.value.id,
             title: form.value.title,
             user: {
                 id: 1
             },
             body: form.value.body,
         };
-        this.http.post('/rest/note', values).subscribe(
-            response => {
-                this.notesService.addNote(values);
+        this.http.post<{id: number, title: string, user: any, body: string}>('/rest/note', values).subscribe(
+            note => {
+                this.notesService.addNote(note);
                 this.displaySuccess = true;
                 setTimeout(() => this.displaySuccess = false, 4000);
             },

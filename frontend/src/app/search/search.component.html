@@ -1,19 +1,22 @@
 <div class="container">
-    <p>The search component.</p>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">Title</th>
-                <th scope="col">Author</th>
-                <th scope="col">Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let note of notesService.notes">
-                <td>{{ note.title }}</td>
-                <td>{{ note.user.username }}</td>
-                <td>{{ note.date | date: 'HH:mm:ss dd-MM-yyyy' }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <p class="alert alert-success" *ngIf="deleteSuccess">Note deleted successfully!</p>
+    <p class="alert alert-danger" *ngIf="error">{{ error.message }}</p>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-lg-4 col-xl-4"
+                *ngFor="let note of notesService.notes; let i = index">
+                <div class="card bg-light mb-3">
+                    <div class="card-header"><em><i>{{ note.title | shorten:27 }}</i></em></div>
+                    <div class="card-body text-center">
+                        <p class="card-text">by <strong>{{ note.user.username | shorten:20 }}</strong></p>
+                    </div>
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <button type="button" class="btn btn-light">Read</button>
+                        <button type="button" class="btn btn-light">Modify</button>
+                        <button type="button" class="btn btn-light" (click)="delete(i, note)">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
