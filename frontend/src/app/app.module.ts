@@ -6,7 +6,7 @@ import { HomeComponent } from './home/home.component';
 import { AppRoutingModule } from './app-routing.module';
 import { SearchComponent } from './search/search.component';
 import { SubmitComponent } from './submit/submit.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ShortenPipe } from './shorten.pipe';
 import { NoteFilter } from './note-filter.pipe';
@@ -24,7 +24,6 @@ import { NoteFilter } from './note-filter.pipe';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule,
     HttpClientModule
   ],
   providers: [],
