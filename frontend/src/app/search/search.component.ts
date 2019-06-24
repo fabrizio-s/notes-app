@@ -18,23 +18,25 @@ export class SearchComponent {
 
     constructor(private notesService: NotesService, private http: HttpClient) {}
 
-    delete(index: number, note: {id: number}) {
-        this.http.delete<{id: number}>('/rest/note/' + note.id).subscribe(
-            deletedNote => {
-                if (this.notesService.notes[index].id === deletedNote.id) {
-                    this.notesService.notes.splice(index, 1);
-                } else {
-                    this.notesService.fetchNotes().subscribe(
-                        notes => {
-                            this.notesService.notes = notes;
-                        },
-                        this.errorHandler
-                    );
-                }
-                this.deleteSuccess = true;
-                setTimeout(() => this.deleteSuccess = false, 4000);
-            }, this.errorHandler
-        );
+    deleteNote(index: number, note: {id: number}) {
+        if (confirm("Are you sure you want to delete this note?")) {
+            this.http.delete<{id: number}>('/rest/note/' + note.id).subscribe(
+                deletedNote => {
+                    if (this.notesService.notes[index].id === deletedNote.id) {
+                        this.notesService.notes.splice(index, 1);
+                    } else {
+                        this.notesService.fetchNotes().subscribe(
+                            notes => {
+                                this.notesService.notes = notes;
+                            },
+                            this.errorHandler
+                        );
+                    }
+                    this.deleteSuccess = true;
+                    setTimeout(() => this.deleteSuccess = false, 4000);
+                }, this.errorHandler
+            );
+        }
     }
 
 }

@@ -28,6 +28,7 @@ export class SubmitComponent {
             note => {
                 this.notesService.addNote(note);
                 this.displaySuccess = true;
+                form.reset();
                 setTimeout(() => this.displaySuccess = false, 4000);
             },
             error => {
