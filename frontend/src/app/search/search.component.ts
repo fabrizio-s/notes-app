@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NotesService } from '../notes.service';
 
 @Component({
     selector: 'app-search',
@@ -6,4 +7,7 @@ import { Component } from '@angular/core';
     styleUrls: ['./search.component.css']
 })
 export class SearchComponent {
+
+    constructor(private notesService: NotesService) {}
+
 }

@@ -6,7 +6,6 @@ import { HomeComponent } from './home/home.component';
 import { AppRoutingModule } from './app-routing.module';
 import { SearchComponent } from './search/search.component';
 import { SubmitComponent } from './submit/submit.component';
-import { NotesComponent } from './search/notes/notes.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -15,8 +14,7 @@ import { HttpClientModule } from '@angular/common/http';
     AppComponent,
     HomeComponent,
     SearchComponent,
-    SubmitComponent,
-    NotesComponent
+    SubmitComponent
   ],
   imports: [
     BrowserModule,
