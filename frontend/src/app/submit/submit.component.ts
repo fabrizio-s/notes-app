@@ -10,6 +10,9 @@ import { HttpClient } from '@angular/common/http';
 })
 export class SubmitComponent {
 
+    error = null;
+    displaySuccess = false;
+
     constructor(private http: HttpClient, private notesService: NotesService) {}
 
     submit(form: NgForm) {
@@ -23,6 +26,12 @@ export class SubmitComponent {
         this.http.post('/rest/note', values).subscribe(
             response => {
                 this.notesService.addNote(values);
+                this.displaySuccess = true;
+                setTimeout(() => this.displaySuccess = false, 4000);
+            },
+            error => {
+                this.error = error;
+                setTimeout(() => this.error = null, 4000);
             }
         );
     }
