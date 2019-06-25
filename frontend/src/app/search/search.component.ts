@@ -1,46 +1,64 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NotesService } from '../notes.service';
-import { HttpClient } from '@angular/common/http';
+import { Note } from '../note';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-search',
     templateUrl: './search.component.html',
     styleUrls: ['./search.component.css']
 })
-export class SearchComponent {
+export class SearchComponent implements OnInit, OnDestroy {
 
+    fetchSub: Subscription;
+    deleteSub: Subscription;
+    errorSub: Subscription;
     enableFilterByTitle = false;
     enableFilterByAuthor = false;
     filteredTitle = '';
     filteredAuthor = '';
+    isLoading = false;
     deleteSuccess = false;
     error = null;
-    errorHandler = (error: any) => {
-        this.error = error;
-        setTimeout(() => this.error = null, 4000);
+
+    constructor(private notesService: NotesService) { }
+
+    ngOnInit() {
+        this.fetchSub = this.notesService.fetch.subscribe(
+            () => {
+                this.isLoading = false;
+            }
+        );
+        this.deleteSub = this.notesService.note.subscribe(
+            deletedNote => {
+                this.deleteSuccess = true;
+                setTimeout(() => this.deleteSuccess = false, 4000);
+                this.isLoading = false;
+            }
+        );
+        this.errorSub = this.notesService.error.subscribe(
+            error => {
+                this.error = error;
+                setTimeout(() => this.error = null, 4000);
+                this.isLoading = false;
+            }
+        );
     }
 
-    constructor(private notesService: NotesService, private http: HttpClient) {}
-
-    deleteNote(index: number, note: {id: number}) {
+    deleteNote(index: number, note: Note) {
         if (confirm('Are you sure you want to delete this note?')) {
-            this.http.delete<{id: number}>('/rest/note/' + note.id).subscribe(
-                deletedNote => {
-                    if (this.notesService.notes[index].id === deletedNote.id) {
-                        this.notesService.notes.splice(index, 1);
-                    } else {
-                        this.notesService.fetchNotes().subscribe(
-                            notes => {
-                                this.notesService.notes = notes;
-                            },
-                            this.errorHandler
-                        );
-                    }
-                    this.deleteSuccess = true;
-                    setTimeout(() => this.deleteSuccess = false, 4000);
-                }, this.errorHandler
-            );
+            this.notesService.deleteNote(index, note);
         }
+    }
+
+    refresh() {
+        this.isLoading = true;
+        this.notesService.fetchNotes();
+    }
+
+    ngOnDestroy() {
+        this.deleteSub.unsubscribe();
+        this.errorSub.unsubscribe();
     }
 
 }

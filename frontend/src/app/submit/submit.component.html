@@ -1,5 +1,5 @@
 <div class="container">
-    <p class="alert alert-success" *ngIf="displaySuccess">Note saved successfully!</p>
+    <p class="alert alert-success" *ngIf="saveSuccess">Note saved successfully!</p>
     <p class="alert alert-danger" *ngIf="error">{{ error.message }}</p>
     <form (ngSubmit)="submit(form)" #form="ngForm">
         <div class="form-group col-sm-8 col-md-6 col-lg-4 mt-3">
