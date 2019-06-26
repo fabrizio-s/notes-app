@@ -19,6 +19,10 @@ INSERT INTO `user` (username, password, email, enabled)
 VALUES
 ('admin', '$2a$10$y/9AukNzbOAg2YaJUQx4W.6bw.ur/noc10uOKBJ7qYspT9HIuThFC', 'admin@notesapp.com', 1);
 
+INSERT INTO `user` (username, password, email, enabled)
+VALUES
+('test_user01', '$2a$10$y/9AukNzbOAg2YaJUQx4W.6bw.ur/noc10uOKBJ7qYspT9HIuThFC', 'test_user01@notesapp.com', 1);
+
 CREATE TABLE `note` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(128) NOT NULL,

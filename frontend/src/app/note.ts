@@ -1,6 +1,8 @@
+import { User } from './user.model';
+
 export interface Note {
     id: number;
     title: string;
-    user: any;
+    user: User;
     body: string;
 }

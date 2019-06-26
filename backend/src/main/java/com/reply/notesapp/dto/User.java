@@ -12,6 +12,8 @@ public class User {
 	
 	private String email;
 	
+	private List<String> roles;
+	
 	@JsonIgnoreProperties(value = { "user" })
 	private List<Note> notes;
 
@@ -45,6 +47,14 @@ public class User {
 
 	public void setNotes(List<Note> notes) {
 		this.notes = notes;
+	}
+
+	public List<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
 	}
 
 }

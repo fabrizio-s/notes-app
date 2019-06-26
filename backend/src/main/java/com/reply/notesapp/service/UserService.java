@@ -28,6 +28,10 @@ public class UserService implements UserDetailsService {
 		return UserConverter.entitiesToDto(userRepository.findAll());
 	}
 	
+	public User findByUsername(String username) {
+		return UserConverter.entityToDto(userRepository.findByUsername(username));
+	}
+	
 	@Override
 	public UserDetails loadUserByUsername(String username) {
 		UserEntity user = userRepository.findByUsername(username);

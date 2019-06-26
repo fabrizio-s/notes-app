@@ -2,15 +2,18 @@
   <div class="row">
     <div class="col-12">
       <ul class="nav nav-tabs">
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="authService.user.getValue()">
           <a class="nav-link" routerLink="/" routerLinkActive="active"
           [routerLinkActiveOptions]="{exact: true}">Home</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="authService.user.getValue()">
           <a class="nav-link" routerLink="/search" routerLinkActive="active">Search</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="authService.user.getValue()">
           <a class="nav-link" routerLink="/submit" routerLinkActive="active">Submit</a>
+        </li>
+        <li class="nav-item" *ngIf="!authService.user.getValue()">
+          <a class="nav-link" routerLink="/login" routerLinkActive="active">Log In</a>
         </li>
       </ul>
     </div>

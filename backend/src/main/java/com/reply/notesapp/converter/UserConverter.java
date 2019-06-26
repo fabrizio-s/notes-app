@@ -15,6 +15,7 @@ public class UserConverter {
 		dto.setUsername(entity.getUsername());
 		dto.setEmail(entity.getEmail());
 		dto.setNotes(NoteConverter.entitiesToDto(entity.getNotes()));
+		dto.setRoles(RoleConverter.entitiesToDto(entity.getRoles()));
 		return dto;
 	}
 	

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Note } from './note';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
+import { AuthService } from './auth.service';
 
 @Injectable()
 export class NotesService {
@@ -11,23 +12,14 @@ export class NotesService {
     note = new Subject<Note>();
     error = new Subject<any>();
 
-    constructor(private http: HttpClient) {
-        this.http.get<Note[]>('/rest/note').subscribe(
-            notes => {
-                this.notes = notes;
-            },
-            error => {
-                console.error(error);
-            }
-        );
-    }
+    constructor(private http: HttpClient, private authService: AuthService) { }
 
     addNote(note: Note): void {
         this.notes.push(note);
     }
 
     saveNote(note: Note) {
-        this.http.post<Note>('/rest/note', note).subscribe(
+        this.http.post<Note>('/rest/note', note, { headers: this.authorization() }).subscribe(
             savedNote => {
                 this.note.next(savedNote);
                 this.addNote(savedNote);
@@ -39,7 +31,7 @@ export class NotesService {
     }
 
     fetchNotes() {
-        this.http.get<Note[]>('/rest/note').subscribe(
+        this.http.get<Note[]>('/rest/note', { headers: this.authorization() }).subscribe(
             notes => {
                 this.notes = notes;
                 this.fetch.next();
@@ -51,7 +43,7 @@ export class NotesService {
     }
 
     deleteNote(index: number, note: Note) {
-        this.http.delete<Note>('/rest/note/' + note.id).subscribe(
+        this.http.delete<Note>('/rest/note/' + note.id, { headers: this.authorization() }).subscribe(
             deletedNote => {
                 if (this.notes[index].id === deletedNote.id) {
                     this.notes.splice(index, 1);
@@ -64,6 +56,16 @@ export class NotesService {
                 this.error.next(error);
             }
         );
+    }
+
+    private authorization(): HttpHeaders {
+        if (this.authService.user.getValue()) {
+            return new HttpHeaders({
+                Authorization: this.authService.user.getValue().token
+            });
+        } else {
+            return new HttpHeaders();
+        }
     }
 
 }

@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NotesService } from '../notes.service';
 import { Note } from '../note';
 import { Subscription } from 'rxjs';
+import { AuthService } from '../auth.service';
 
 @Component({
     selector: 'app-search',
@@ -10,6 +11,7 @@ import { Subscription } from 'rxjs';
 })
 export class SearchComponent implements OnInit, OnDestroy {
 
+    userSub: Subscription;
     fetchSub: Subscription;
     deleteSub: Subscription;
     errorSub: Subscription;
@@ -21,9 +23,16 @@ export class SearchComponent implements OnInit, OnDestroy {
     deleteSuccess = false;
     error = null;
 
-    constructor(private notesService: NotesService) { }
+    constructor(private authService: AuthService, private notesService: NotesService) { }
 
     ngOnInit() {
+        this.userSub = this.authService.user.subscribe(
+            user => {
+                if (user) {
+                    this.notesService.fetchNotes();
+                }
+            }
+        );
         this.fetchSub = this.notesService.fetch.subscribe(
             () => {
                 this.isLoading = false;
