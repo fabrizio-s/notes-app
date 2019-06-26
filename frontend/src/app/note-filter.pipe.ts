@@ -7,7 +7,7 @@ export class NoteFilter implements PipeTransform {
               filteredTitle: string,
               enableFilterByAuthor: boolean,
               filteredAuthor: string) {
-        if (enableFilterByTitle && enableFilterByTitle) {
+        if (enableFilterByTitle && enableFilterByAuthor) {
             return notes.filter(
                 note => note.title.toLowerCase().indexOf(filteredTitle.toLowerCase()) !== -1
                 && note.user.username.toLowerCase().indexOf(filteredAuthor.toLowerCase()) !== -1
