@@ -3,18 +3,20 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { User } from './user.model';
 import { Note } from './note';
+import { Router } from '@angular/router';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AuthService {
 
     user = new BehaviorSubject<User>(null);
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient, private router: Router) { }
 
     login(credentials: {username: string, password: string}) {
         this.http.get<User>('/api/authenticate?username=' + credentials.username + '&password=' + credentials.password)
         .subscribe(user => {
             this.user.next(user);
+            this.router.navigate(['']);
         },
         error => {
             console.error(error);
