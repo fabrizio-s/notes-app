@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { NotesService } from './notes.service';
 import { AuthService } from './auth.service';
 
 @Component({

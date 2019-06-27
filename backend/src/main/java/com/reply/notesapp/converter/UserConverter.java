@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.reply.notesapp.dto.SignupUserResponse;
 import com.reply.notesapp.dto.User;
 import com.reply.notesapp.entity.UserEntity;
 
@@ -25,6 +26,14 @@ public class UserConverter {
 			dtos.add(entityToDto(entity));
 		}
 		return dtos;
+	}
+	
+	public static SignupUserResponse entityToSignupResponse(UserEntity entity) {
+		SignupUserResponse response = new SignupUserResponse();
+		response.setId(entity.getId());
+		response.setUsername(entity.getUsername());
+		response.setEmail(entity.getEmail());
+		return response;
 	}
 	
 }

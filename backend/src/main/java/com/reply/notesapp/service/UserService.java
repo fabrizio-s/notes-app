@@ -10,9 +10,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.reply.notesapp.converter.UserConverter;
+import com.reply.notesapp.dto.SignupUserRequest;
+import com.reply.notesapp.dto.SignupUserResponse;
 import com.reply.notesapp.dto.User;
 import com.reply.notesapp.entity.UserEntity;
 import com.reply.notesapp.repository.UserRepository;
@@ -24,13 +27,48 @@ public class UserService implements UserDetailsService {
 	@Autowired
 	private UserRepository userRepository;
 	
+	@Autowired
+    private PasswordEncoder passwordEncoder;
+	
 	public List<User> getAllUsers() {
 		return UserConverter.entitiesToDto(userRepository.findAll());
+	}
+	
+	public User findById(Long id) {
+		return UserConverter.entityToDto(userRepository.getOne(id));
+	}
+	
+	public UserEntity findEntityById(Long id) {
+		return userRepository.getOne(id);
 	}
 	
 	public User findByUsername(String username) {
 		return UserConverter.entityToDto(userRepository.findByUsername(username));
 	}
+	
+	public User findByEmail(String email) {
+        return UserConverter.entityToDto(userRepository.findByEmail(email));
+    }
+    
+    public SignupUserResponse saveUser(SignupUserRequest request) {
+        UserEntity entity = new UserEntity();
+        entity.setUsername(request.getUsername());
+        entity.setPassword(passwordEncoder.encode(request.getPassword()));
+        entity.setEmail(request.getEmail());
+        entity.setEnabled(false);
+        return UserConverter.entityToSignupResponse(userRepository.save(entity));
+    }
+
+    public User deleteUser(Long id) {
+    	User user = UserConverter.entityToDto(userRepository.getOne(id));
+        userRepository.deleteById(id);
+        return user;
+    }
+
+    public void verifyUser(UserEntity user) throws RuntimeException {
+    	user.setEnabled(true);
+    	userRepository.save(user);
+    }
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) {

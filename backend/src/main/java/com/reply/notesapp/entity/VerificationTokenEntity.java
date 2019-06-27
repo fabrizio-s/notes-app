@@ -1,16 +1,12 @@
 package com.reply.notesapp.entity;
 
 import java.util.Date;
-import java.util.UUID;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -31,22 +27,8 @@ public class VerificationTokenEntity {
     @Column(name = "created_at")
     private Date createdAt;
 
-    @OneToOne(cascade={CascadeType.PERSIST,
-            CascadeType.MERGE,
-            CascadeType.DETACH,
-            CascadeType.REFRESH})
-    @JoinColumn(name = "user_id")
-    private UserEntity user;
-
-    public VerificationTokenEntity() {
-        this(null);
-    }
-
-    public VerificationTokenEntity(UserEntity user) {
-        this.user = user;
-        createdAt = new Date();
-        uuid = UUID.randomUUID().toString();
-    }
+    @Column(name = "user_id")
+    private Long userId;
 
     public Long getId() {
         return id;
@@ -72,12 +54,12 @@ public class VerificationTokenEntity {
         this.createdAt = createdAt;
     }
 
-    public UserEntity getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(UserEntity user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 	
 }
