@@ -8,8 +8,8 @@ import { SearchComponent } from './search/search.component';
 import { SubmitComponent } from './submit/submit.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { ShortenPipe } from './shorten.pipe';
-import { NoteFilter } from './note-filter.pipe';
+import { ShortenPipe } from './pipe/shorten.pipe';
+import { NoteFilter } from './pipe/note-filter.pipe';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
 

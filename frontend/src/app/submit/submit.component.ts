@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { NotesService } from '../notes.service';
-import { Note } from '../note';
+import { NoteService } from '../note/note.service';
+import { Note } from '../note/note.model';
 import { Subscription } from 'rxjs';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
     selector: 'app-submit',
@@ -18,17 +18,17 @@ export class SubmitComponent implements OnInit, OnDestroy {
     saveSuccess = false;
     @ViewChild('form', {static: true}) form: NgForm;
 
-    constructor(private authService: AuthService, private notesService: NotesService) { }
+    constructor(private authService: AuthService, private noteService: NoteService) { }
 
     ngOnInit() {
-        this.saveSub = this.notesService.note.subscribe(
+        this.saveSub = this.noteService.note.subscribe(
             savedNote => {
                 this.saveSuccess = true;
                 setTimeout(() => this.saveSuccess = false, 4000);
                 this.form.reset();
             }
         );
-        this.errorSub = this.notesService.error.subscribe(
+        this.errorSub = this.noteService.error.subscribe(
             error => {
                 this.error = error;
                 setTimeout(() => this.error = null, 4000);
@@ -43,7 +43,7 @@ export class SubmitComponent implements OnInit, OnDestroy {
             user: this.authService.user.getValue(),
             body: form.value.body,
         };
-        this.notesService.saveNote(note);
+        this.noteService.saveNote(note);
     }
 
     ngOnDestroy() {

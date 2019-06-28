@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Note } from './note';
-import { Subject, Subscription } from 'rxjs';
-import { AuthService } from './auth.service';
+import { Note } from './note.model';
+import { Subject } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({ providedIn: 'root' })
-export class NotesService {
+export class NoteService {
 
     notes: Note[];
     fetch = new Subject<void>();
