@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NoteService } from '../note/note.service';
-import { Note } from '../note/note.model';
+import { NoteService } from '../../note/note.service';
+import { Note } from '../../note/note.model';
 import { Subscription } from 'rxjs';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
     selector: 'app-search',

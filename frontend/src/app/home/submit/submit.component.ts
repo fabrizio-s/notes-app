@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { NoteService } from '../note/note.service';
-import { Note } from '../note/note.model';
+import { NoteService } from '../../note/note.service';
+import { Note } from '../../note/note.model';
 import { Subscription } from 'rxjs';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
     selector: 'app-submit',

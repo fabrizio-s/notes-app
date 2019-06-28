@@ -16,7 +16,7 @@ export class AuthService {
         this.http.get<User>('/api/authenticate?username=' + credentials.username + '&password=' + credentials.password)
         .subscribe(user => {
             this.user.next(user);
-            this.router.navigate(['']);
+            this.router.navigate(['read']);
         },
         error => {
             console.error(error);

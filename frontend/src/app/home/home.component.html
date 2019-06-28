@@ -1,3 +1,25 @@
-<div class="container">
-    <p>Welcome, <strong>{{ authService.user.getValue().username }}</strong>!</p>
+<div class="container mb-3">
+    <div class="row">
+        <div class="col-12">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/read" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{exact: true}">Read</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/search" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{exact: true}">Search</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/submit" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{exact: true}">Submit</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <router-outlet></router-outlet>
+    </div>
 </div>
