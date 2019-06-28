@@ -10,7 +10,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ShortenPipe } from './shorten.pipe';
 import { NoteFilter } from './note-filter.pipe';
-import { AuthComponent } from './auth/auth.component';
+import { LoginComponent } from './auth/login/login.component';
+import { SignupComponent } from './auth/signup/signup.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { AuthComponent } from './auth/auth.component';
     HomeComponent,
     SearchComponent,
     SubmitComponent,
-    AuthComponent,
+    LoginComponent,
+    SignupComponent,
     ShortenPipe,
     NoteFilter
   ],

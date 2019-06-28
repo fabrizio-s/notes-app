@@ -1,0 +1,13 @@
+<div class="container">
+    <h4>Sign Up</h4>
+    <form class="mb-1" (ngSubmit)="signup(signupForm)" #signupForm="ngForm">
+        <div class="form-group col-sm-8 col-md-6 col-lg-4 mt-2">
+            <input type="text" name="username" class="form-control" placeholder="Username" #username="ngModel" ngModel>
+        </div>
+        <div class="form-group col-sm-8 col-md-6 col-lg-4 mt-2">
+            <input type="password" name="password" class="form-control" placeholder="Password" #password="ngModel" ngModel>
+        </div>
+        <button type="submit" class="btn btn-primary ml-3">Sign Up</button>
+    </form>
+    <a href="javascript:void(0);" (click)="navigateLogin()" class="ml-3"><small>Already have an account? Log in!</small></a>
+</div>
