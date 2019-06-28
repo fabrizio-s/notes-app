@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -55,7 +56,7 @@ public class AuthRestService {
 	}
 	
 	@PostMapping("/api/register")
-	public SignupUserResponse register(SignupUserRequest signupUser) {
+	public SignupUserResponse register(@RequestBody SignupUserRequest signupUser) {
 		// TODO: validate sign up request
 		
 		SignupUserResponse user = userService.saveUser(signupUser);
@@ -64,14 +65,13 @@ public class AuthRestService {
 	}
 	
 	@GetMapping("/api/verify")
-    public String verify(@RequestParam("token") String uuid) {
+    public SignupUserResponse verify(@RequestParam("token") String uuid) {
         VerificationToken token = verificationTokenService.findByUuid(uuid);
         
         // TODO: validate token
         
         UserEntity user = userService.findEntityById(token.getUserId());
-        userService.verifyUser(user);
-        return "account-verified";
+        return userService.verifyUser(user, token);
     }
 
 }

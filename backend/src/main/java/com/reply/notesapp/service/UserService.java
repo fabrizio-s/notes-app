@@ -14,11 +14,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.reply.notesapp.converter.UserConverter;
+import com.reply.notesapp.converter.VerificationTokenConverter;
 import com.reply.notesapp.dto.SignupUserRequest;
 import com.reply.notesapp.dto.SignupUserResponse;
 import com.reply.notesapp.dto.User;
+import com.reply.notesapp.dto.VerificationToken;
 import com.reply.notesapp.entity.UserEntity;
 import com.reply.notesapp.repository.UserRepository;
+import com.reply.notesapp.repository.VerificationTokenRepository;
 
 @Service
 @Transactional
@@ -26,6 +29,9 @@ public class UserService implements UserDetailsService {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private VerificationTokenRepository verificationTokenRepository;
 	
 	@Autowired
     private PasswordEncoder passwordEncoder;
@@ -65,9 +71,10 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
-    public void verifyUser(UserEntity user) throws RuntimeException {
+    public SignupUserResponse verifyUser(UserEntity user, VerificationToken token) throws RuntimeException {
     	user.setEnabled(true);
-    	userRepository.save(user);
+    	verificationTokenRepository.delete(VerificationTokenConverter.dtoToEntity(token));
+    	return UserConverter.entityToSignupResponse(userRepository.save(user));
     }
 	
 	@Override

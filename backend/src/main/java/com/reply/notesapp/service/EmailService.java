@@ -40,7 +40,7 @@ public class EmailService {
         mailMessage.setSubject("Complete Registration!");
         mailMessage.setFrom(email);
         mailMessage.setText("To confirm your account, please click here : "
-                +"http://" + host + ":" + port + ("/".equals(context) ? "" : context) + "/registration/verify?token="+token.getUuid());
+                +"http://" + host + ":" + port + ("/".equals(context) ? "" : context) + "/api/verify?token="+token.getUuid());
         javaMailSender.send(mailMessage);
 	}
 

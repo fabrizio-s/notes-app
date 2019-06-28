@@ -33,6 +33,7 @@ public class UserConverter {
 		response.setId(entity.getId());
 		response.setUsername(entity.getUsername());
 		response.setEmail(entity.getEmail());
+		response.setEnabled(entity.isEnabled());
 		return response;
 	}
 	
