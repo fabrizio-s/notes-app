@@ -15,8 +15,10 @@ export class AuthService {
     login(credentials: {username: string, password: string}) {
         this.http.get<User>('/api/authenticate?username=' + credentials.username + '&password=' + credentials.password)
         .subscribe(user => {
-            this.user.next(user);
-            this.router.navigate(['read']);
+            if (user) {
+                this.user.next(user);
+                this.router.navigate(['read']);
+            }
         },
         error => {
             console.error(error);

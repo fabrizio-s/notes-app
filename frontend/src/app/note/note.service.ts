@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Note } from './note.model';
 import { Subject } from 'rxjs';
-import { AuthService } from '../auth/auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class NoteService {
@@ -12,17 +11,13 @@ export class NoteService {
     note = new Subject<Note>();
     error = new Subject<any>();
 
-    constructor(private http: HttpClient, private authService: AuthService) { }
-
-    addNote(note: Note): void {
-        this.notes.push(note);
-    }
+    constructor(private http: HttpClient) { }
 
     saveNote(note: Note) {
-        this.http.post<Note>('/rest/note', note, { headers: this.authorization() }).subscribe(
+        this.http.post<Note>('/rest/note', note).subscribe(
             savedNote => {
                 this.note.next(savedNote);
-                this.addNote(savedNote);
+                this.notes.push(savedNote);
             },
             error => {
                 this.error.next(error);
@@ -31,7 +26,7 @@ export class NoteService {
     }
 
     fetchNotes() {
-        this.http.get<Note[]>('/rest/note', { headers: this.authorization() }).subscribe(
+        this.http.get<Note[]>('/rest/note').subscribe(
             notes => {
                 this.notes = notes;
                 this.fetch.next();
@@ -43,7 +38,7 @@ export class NoteService {
     }
 
     deleteNote(index: number, note: Note) {
-        this.http.delete<Note>('/rest/note/' + note.id, { headers: this.authorization() }).subscribe(
+        this.http.delete<Note>('/rest/note/' + note.id).subscribe(
             deletedNote => {
                 if (this.notes[index].id === deletedNote.id) {
                     this.notes.splice(index, 1);
@@ -56,16 +51,6 @@ export class NoteService {
                 this.error.next(error);
             }
         );
-    }
-
-    private authorization(): HttpHeaders {
-        if (this.authService.user.getValue()) {
-            return new HttpHeaders({
-                Authorization: this.authService.user.getValue().token
-            });
-        } else {
-            return new HttpHeaders();
-        }
     }
 
 }
