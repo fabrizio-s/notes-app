@@ -25,6 +25,11 @@ export class AuthService {
         });
     }
 
+    logout() {
+        this.user.next(null);
+        this.router.navigate(['login']);
+    }
+
     isAdmin(): boolean {
         return this.user.getValue() && this.user.getValue().roles.includes('ROLE_ADMIN');
     }
