@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { User } from '../user/user.model';
 import { Note } from '../note/note.model';
 import { Router } from '@angular/router';
@@ -12,6 +12,7 @@ export class AuthService {
 
     user = new BehaviorSubject<User>(null);
     private tokenExpirationTimer: any;
+    error = new Subject<any>();
 
     constructor(private http: HttpClient, private router: Router) { }
 
@@ -31,7 +32,7 @@ export class AuthService {
             }
         },
         error => {
-            console.error(error);
+            this.error.next(error);
         });
     }
 

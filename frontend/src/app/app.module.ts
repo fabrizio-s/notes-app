@@ -14,6 +14,8 @@ import { SignupComponent } from './auth/signup/signup.component';
 import { ReadComponent } from './home/read/read.component';
 import { AppComponent } from './app.component';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
+import { AlertComponent } from './shared/alert/alert.component';
+import { PlaceholderDirective } from './shared/placeholder/placeholder.directive';
 
 @NgModule({
   declarations: [
@@ -24,8 +26,10 @@ import { AuthInterceptorService } from './auth/auth-interceptor.service';
     SubmitComponent,
     LoginComponent,
     SignupComponent,
+    AlertComponent,
     ShortenPipe,
-    NoteFilter
+    NoteFilter,
+    PlaceholderDirective
   ],
   imports: [
     BrowserModule,
@@ -40,6 +44,9 @@ import { AuthInterceptorService } from './auth/auth-interceptor.service';
       multi: true
     }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    AlertComponent
+  ]
 })
 export class AppModule { }
