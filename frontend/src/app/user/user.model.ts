@@ -1,14 +1,16 @@
+import { Token } from './token.model';
+
 export class User {
 
-    constructor(public username: string,
-                public id: number,
+    constructor(public id: number,
+                public username: string,
                 public email: string,
                 public roles: string[],
-                private _token: string,
-                private _tokenExpirationDate: Date) { }
+                // tslint:disable-next-line: variable-name
+                private _token: Token) { }
 
-    get token() {
-        if (!this._tokenExpirationDate || new Date() > this._tokenExpirationDate) {
+    get token(): Token {
+        if (!this._token || !this._token.expirationDate || new Date() > this._token.expirationDate) {
             return null;
         }
         return this._token;

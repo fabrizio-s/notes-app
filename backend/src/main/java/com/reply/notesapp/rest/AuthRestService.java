@@ -1,5 +1,6 @@
 package com.reply.notesapp.rest;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +23,8 @@ import com.reply.notesapp.service.EmailService;
 import com.reply.notesapp.service.UserService;
 import com.reply.notesapp.service.VerificationTokenService;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 
 @RestController
@@ -40,18 +43,22 @@ public class AuthRestService {
 	public Map<String, Object> authenticate(HttpServletResponse response) {
 		String token = response.getHeader(SecurityConstants.TOKEN_HEADER);
 		byte[] signingKey = SecurityConstants.JWT_SECRET.getBytes();
-		String username = Jwts.parser()
-                .setSigningKey(signingKey)
-                .parseClaimsJws(token.replace("Bearer ", ""))
-                .getBody()
-                .getSubject();
+		Jws<Claims> claims = Jwts.parser()
+				.setSigningKey(signingKey)
+				.parseClaimsJws(token.replace("Bearer ", ""));
+		String username = claims.getBody().getSubject();
+		Date expiration = claims.getBody().getExpiration();
 		User user = userService.findByUsername(username);
 		Map<String, Object> json = new HashMap<>();
 		json.put("id", user.getId());
 		json.put("username", user.getUsername());
 		json.put("email", user.getEmail());
-		json.put("token", token);
 		json.put("roles", user.getRoles());
+		Map<String, Object> tokenMap = new HashMap<>();
+		tokenMap.put("value", token);
+		tokenMap.put("duration", expiration.getTime() - System.currentTimeMillis());
+		json.put("token", tokenMap);
+//		json.put("duration", expiration.getTime() - System.currentTimeMillis());
 		return json;
 	}
 	
