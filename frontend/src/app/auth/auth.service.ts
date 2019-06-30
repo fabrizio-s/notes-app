@@ -18,6 +18,7 @@ export class AuthService {
             if (user) {
                 this.user.next(user);
                 this.router.navigate(['read']);
+                localStorage.setItem('userData', JSON.stringify(user));
             }
         },
         error => {
@@ -28,6 +29,16 @@ export class AuthService {
     logout() {
         this.user.next(null);
         this.router.navigate(['login']);
+    }
+
+    autologin() {
+        const user: User = JSON.parse(localStorage.getItem('userData'));
+        if (!user) {
+            return;
+        }
+        if (user.token) {
+            this.user.next(user);
+        }
     }
 
     isAdmin(): boolean {
