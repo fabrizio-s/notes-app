@@ -27,14 +27,21 @@
             <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-lg-4 col-xl-4"
                 *ngFor="let note of (noteService.notes | noteFilter:enableFilterByTitle:filteredTitle:enableFilterByAuthor:filteredAuthor ); let i = index">
                 <div class="card bg-light mb-3">
-                    <div class="card-header"><em><i>{{ note.title | shorten:27 }}</i></em></div>
+                    <div class="card-header">
+                        <em><i>{{ note.title | shorten:24 }}</i></em>
+                        <button type="button" class="close" aria-label="Delete note."
+                            *ngIf="authService.isNoteOwner(note) || authService.isAdmin()"
+                            (click)="deleteNote(i, note)">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                     <div class="card-body text-center">
-                        <p class="card-text">by <strong>{{ note.user.username | shorten:20 }}</strong></p>
+                        <p class="card-text">by <strong>{{ note.user.username | shorten:21 }}</strong></p>
                     </div>
                     <div class="btn-group" role="group" aria-label="Basic example">
-                        <button type="button" class="btn btn-light">Read</button>
-                        <button type="button" class="btn btn-light" *ngIf="authService.isNoteOwner(note) || authService.isAdmin()">Modify</button>
-                        <button type="button" class="btn btn-light" *ngIf="authService.isNoteOwner(note) || authService.isAdmin()" (click)="deleteNote(i, note)">Delete</button>
+                        <button type="button" mdbBtn color="default" rounded="true" mdbWavesEffect>Read</button>
+                        <button type="button" class="btn btn-light" rounded="true"
+                            *ngIf="authService.isNoteOwner(note) || authService.isAdmin()">Modify</button>
                     </div>
                 </div>
             </div>
