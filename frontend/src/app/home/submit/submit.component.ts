@@ -8,7 +8,7 @@ import { AuthService } from '../../auth/auth.service';
 @Component({
     selector: 'app-submit',
     templateUrl: './submit.component.html',
-    styleUrls: ['./submit.component.css']
+    styleUrls: ['./submit.component.scss']
 })
 export class SubmitComponent implements OnInit, OnDestroy {
 
