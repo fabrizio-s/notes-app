@@ -28,7 +28,7 @@ export class AuthService {
                 this.user.next(user);
                 localStorage.setItem('userData', JSON.stringify(user));
                 this.autologout(response.token.duration);
-                this.router.navigate(['read']);
+                this.router.navigate(['welcome']);
             }
         },
         error => {

@@ -11,7 +11,7 @@ import { ShortenPipe } from './pipe/shorten.pipe';
 import { NoteFilter } from './pipe/note-filter.pipe';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
-import { ReadComponent } from './home/read/read.component';
+import { WelcomeComponent } from './home/welcome/welcome.component';
 import { AppComponent } from './app.component';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { AlertComponent } from './shared/alert/alert.component';
@@ -23,7 +23,7 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
   declarations: [
     AppComponent,
     HomeComponent,
-    ReadComponent,
+    WelcomeComponent,
     SearchComponent,
     SubmitComponent,
     LoginComponent,

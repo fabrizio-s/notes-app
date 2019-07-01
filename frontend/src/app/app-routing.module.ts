@@ -6,18 +6,18 @@ import { SubmitComponent } from './home/submit/submit.component';
 import { AuthGuard } from './auth/auth.guard';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
-import { ReadComponent } from './home/read/read.component';
+import { WelcomeComponent } from './home/welcome/welcome.component';
 import { HomeComponent } from './home/home.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthGuard], children: [
-    { path: 'read', component: ReadComponent, canActivate: [AuthGuard] },
+    { path: 'welcome', component: WelcomeComponent, canActivate: [AuthGuard] },
     { path: 'search', component: SearchComponent, canActivate: [AuthGuard] },
     { path: 'submit', component: SubmitComponent, canActivate: [AuthGuard] },
   ] },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
-  { path: '**', redirectTo: 'read', pathMatch: 'full' }
+  { path: '**', redirectTo: 'welcome', pathMatch: 'full' }
 ];
 
 @NgModule({

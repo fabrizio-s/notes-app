@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
 
 @Component({
-    selector: 'app-read',
-    templateUrl: './read.component.html',
-    styleUrls: ['./read.component.css']
+    selector: 'app-welcome',
+    templateUrl: './welcome.component.html',
+    styleUrls: ['./welcome.component.css']
 })
-export class ReadComponent {
+export class WelcomeComponent {
 
     constructor(private authService: AuthService) { }
 
