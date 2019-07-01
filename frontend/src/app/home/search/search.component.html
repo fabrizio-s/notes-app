@@ -39,7 +39,7 @@
                         <p class="card-text">by <strong>{{ note.user.username | shorten:21 }}</strong></p>
                     </div>
                     <div class="btn-group" role="group" aria-label="Basic example">
-                        <button type="button" mdbBtn color="default" rounded="true" mdbWavesEffect>Welcome</button>
+                        <button type="button" mdbBtn color="default" rounded="true" mdbWavesEffect>Read</button>
                         <button type="button" class="btn btn-light" rounded="true"
                             *ngIf="authService.isNoteOwner(note) || authService.isAdmin()">Modify</button>
                     </div>
