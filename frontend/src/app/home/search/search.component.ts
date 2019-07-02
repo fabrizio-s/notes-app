@@ -3,6 +3,9 @@ import { NoteService } from '../../note/note.service';
 import { Note } from '../../note/note.model';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../auth/auth.service';
+import { MDBModalService } from 'angular-bootstrap-md';
+import { ModifyModalComponent } from './modify-modal/modify-modal.component';
+import { ReadModalComponent } from './read-modal/read-modal.component';
 
 @Component({
     selector: 'app-search',
@@ -23,7 +26,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     deleteSuccess = false;
     error = null;
 
-    constructor(private authService: AuthService, private noteService: NoteService) { }
+    constructor(private authService: AuthService, private noteService: NoteService, private mDBModalService: MDBModalService) { }
 
     ngOnInit() {
         this.userSub = this.authService.user.subscribe(
@@ -52,6 +55,37 @@ export class SearchComponent implements OnInit, OnDestroy {
                 this.isLoading = false;
             }
         );
+    }
+
+    readNote(note: Note) {
+        this.mDBModalService.show(ReadModalComponent, {
+            backdrop: true,
+            keyboard: true,
+            focus: true,
+            show: false,
+            ignoreBackdropClick: false,
+            class: 'modal-lg',
+            animated: true,
+            data: {
+                note
+            }
+        });
+    }
+
+    updateNote(index: number, note: Note) {
+        this.mDBModalService.show(ModifyModalComponent, {
+            backdrop: true,
+            keyboard: true,
+            focus: true,
+            show: false,
+            ignoreBackdropClick: false,
+            class: 'modal-lg',
+            animated: true,
+            data: {
+                index,
+                note
+            }
+        });
     }
 
     deleteNote(index: number, note: Note) {

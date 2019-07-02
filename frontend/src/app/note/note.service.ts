@@ -25,6 +25,22 @@ export class NoteService {
         );
     }
 
+    updateNote(index: number, note: Note) {
+        this.http.put<Note>('/rest/note/' + note.id, note).subscribe(
+            updatedNote => {
+                if (this.notes[index].id === updatedNote.id) {
+                    this.notes[index].title = updatedNote.title;
+                    this.notes[index].body = updatedNote.body;
+                } else {
+                    this.fetchNotes();
+                }
+            },
+            error => {
+                this.error.next(error);
+            }
+        );
+    }
+
     fetchNotes() {
         this.http.get<Note[]>('/rest/note').subscribe(
             notes => {

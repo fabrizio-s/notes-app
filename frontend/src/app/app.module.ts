@@ -18,6 +18,8 @@ import { AlertComponent } from './shared/alert/alert.component';
 import { PlaceholderDirective } from './shared/placeholder/placeholder.directive';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
+import { ModifyModalComponent } from './home/search/modify-modal/modify-modal.component';
+import { ReadModalComponent } from './home/search/read-modal/read-modal.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,8 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
     LoginComponent,
     SignupComponent,
     AlertComponent,
+    ModifyModalComponent,
+    ReadModalComponent,
     ShortenPipe,
     NoteFilter,
     PlaceholderDirective
@@ -51,7 +55,9 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
   ],
   bootstrap: [AppComponent],
   entryComponents: [
-    AlertComponent
+    AlertComponent,
+    ModifyModalComponent,
+    ReadModalComponent
   ]
 })
 export class AppModule { }
