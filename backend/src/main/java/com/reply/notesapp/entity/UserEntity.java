@@ -38,8 +38,8 @@ public class UserEntity {
 	private boolean enabled;
 	
 	@OneToMany(mappedBy="user",
-			   cascade= {CascadeType.PERSIST, CascadeType.MERGE,
-						 CascadeType.DETACH, CascadeType.REFRESH})
+			fetch = FetchType.LAZY,
+			cascade = {CascadeType.ALL})
 	private Collection<NoteEntity> notes;
 	
 	@ManyToMany(fetch = FetchType.LAZY,

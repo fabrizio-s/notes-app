@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.reply.notesapp.converter.VerificationTokenConverter;
-import com.reply.notesapp.dto.VerificationToken;
+import com.reply.notesapp.ui.dto.VerificationToken;
 import com.reply.notesapp.entity.VerificationTokenEntity;
 import com.reply.notesapp.repository.VerificationTokenRepository;
 

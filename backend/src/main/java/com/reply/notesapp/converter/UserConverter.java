@@ -2,26 +2,19 @@ package com.reply.notesapp.converter;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-
-import com.reply.notesapp.dto.SignupUserResponse;
-import com.reply.notesapp.dto.User;
+import com.reply.notesapp.ui.model.SignupUserResponse;
+import com.reply.notesapp.ui.dto.User;
 import com.reply.notesapp.entity.UserEntity;
+import org.modelmapper.ModelMapper;
 
 public class UserConverter {
 
 	public static User entityToDto(UserEntity entity) {
-		User dto = new User();
-		dto.setId(entity.getId());
-		dto.setUsername(entity.getUsername());
-		dto.setEmail(entity.getEmail());
-		dto.setNotes(NoteConverter.entitiesToDto(entity.getNotes()));
-		dto.setRoles(RoleConverter.entitiesToDto(entity.getRoles()));
-		return dto;
+		return new ModelMapper().map(entity, User.class);
 	}
 	
-	public static List<User> entitiesToDto(Collection<UserEntity> entities) {
-		List<User> dtos = new ArrayList<>();
+	public static Collection<User> entitiesToDto(Collection<UserEntity> entities) {
+		Collection<User> dtos = new ArrayList<>();
 		for (UserEntity entity : entities) {
 			dtos.add(entityToDto(entity));
 		}
@@ -29,12 +22,7 @@ public class UserConverter {
 	}
 	
 	public static SignupUserResponse entityToSignupResponse(UserEntity entity) {
-		SignupUserResponse response = new SignupUserResponse();
-		response.setId(entity.getId());
-		response.setUsername(entity.getUsername());
-		response.setEmail(entity.getEmail());
-		response.setEnabled(entity.isEnabled());
-		return response;
+		return new ModelMapper().map(entity, SignupUserResponse.class);
 	}
 	
 }

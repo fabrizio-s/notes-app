@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.reply.notesapp.converter.NoteConverter;
-import com.reply.notesapp.dto.Note;
+import com.reply.notesapp.ui.dto.Note;
 import com.reply.notesapp.entity.NoteEntity;
 import com.reply.notesapp.repository.NoteRepository;
 import com.reply.notesapp.repository.UserRepository;

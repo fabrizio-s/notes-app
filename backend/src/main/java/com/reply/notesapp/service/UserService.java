@@ -1,6 +1,6 @@
 package com.reply.notesapp.service;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -15,10 +15,10 @@ import org.springframework.stereotype.Service;
 
 import com.reply.notesapp.converter.UserConverter;
 import com.reply.notesapp.converter.VerificationTokenConverter;
-import com.reply.notesapp.dto.SignupUserRequest;
-import com.reply.notesapp.dto.SignupUserResponse;
-import com.reply.notesapp.dto.User;
-import com.reply.notesapp.dto.VerificationToken;
+import com.reply.notesapp.ui.model.SignupUserRequest;
+import com.reply.notesapp.ui.model.SignupUserResponse;
+import com.reply.notesapp.ui.dto.User;
+import com.reply.notesapp.ui.dto.VerificationToken;
 import com.reply.notesapp.entity.UserEntity;
 import com.reply.notesapp.repository.UserRepository;
 import com.reply.notesapp.repository.VerificationTokenRepository;
@@ -27,21 +27,24 @@ import com.reply.notesapp.repository.VerificationTokenRepository;
 @Transactional
 public class UserService implements UserDetailsService {
 
-	@Autowired
 	private UserRepository userRepository;
-	
-	@Autowired
 	private VerificationTokenRepository verificationTokenRepository;
+
+	@Autowired
+	public UserService(UserRepository userRepository, VerificationTokenRepository verificationTokenRepository) {
+		this.userRepository = userRepository;
+		this.verificationTokenRepository = verificationTokenRepository;
+	}
 	
 	@Autowired
     private PasswordEncoder passwordEncoder;
 	
-	public List<User> getAllUsers() {
+	public Collection<User> getAllUsers() {
 		return UserConverter.entitiesToDto(userRepository.findAll());
 	}
 	
 	public User findById(Long id) {
-		return UserConverter.entityToDto(userRepository.getOne(id));
+		return UserConverter.entityToDto(findEntityById(id));
 	}
 	
 	public UserEntity findEntityById(Long id) {
@@ -49,12 +52,20 @@ public class UserService implements UserDetailsService {
 	}
 	
 	public User findByUsername(String username) {
-		return UserConverter.entityToDto(userRepository.findByUsername(username));
+		return UserConverter.entityToDto(findEntityByUsername(username));
+	}
+
+	public UserEntity findEntityByUsername(String username) {
+		return userRepository.findByUsername(username);
 	}
 	
 	public User findByEmail(String email) {
-        return UserConverter.entityToDto(userRepository.findByEmail(email));
+        return UserConverter.entityToDto(findEntityByEmail(email));
     }
+
+	public UserEntity findEntityByEmail(String email) {
+		return userRepository.findByEmail(email);
+	}
     
     public SignupUserResponse saveUser(SignupUserRequest request) {
         UserEntity entity = new UserEntity();

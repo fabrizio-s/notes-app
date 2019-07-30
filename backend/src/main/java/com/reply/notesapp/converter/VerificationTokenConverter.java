@@ -1,26 +1,17 @@
 package com.reply.notesapp.converter;
 
-import com.reply.notesapp.dto.VerificationToken;
+import com.reply.notesapp.ui.dto.VerificationToken;
 import com.reply.notesapp.entity.VerificationTokenEntity;
+import org.modelmapper.ModelMapper;
 
 public class VerificationTokenConverter {
 	
 	public static VerificationToken entityToDto(VerificationTokenEntity entity) {
-		VerificationToken dto = new VerificationToken();
-		dto.setId(entity.getId());
-		dto.setUuid(entity.getUuid());
-		dto.setCreatedAt(entity.getCreatedAt());
-		dto.setUserId(entity.getUserId());
-		return dto;
+		return new ModelMapper().map(entity, VerificationToken.class);
 	}
 	
 	public static VerificationTokenEntity dtoToEntity(VerificationToken dto) {
-		VerificationTokenEntity entity = new VerificationTokenEntity();
-		entity.setId(dto.getId());
-		entity.setUuid(dto.getUuid());
-		entity.setCreatedAt(dto.getCreatedAt());
-		entity.setUserId(dto.getUserId());
-		return entity;
+		return new ModelMapper().map(dto, VerificationTokenEntity.class);
 	}
 
 }

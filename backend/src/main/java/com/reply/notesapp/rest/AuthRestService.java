@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.reply.notesapp.dto.SignupUserRequest;
-import com.reply.notesapp.dto.SignupUserResponse;
-import com.reply.notesapp.dto.User;
+import com.reply.notesapp.ui.model.SignupUserRequest;
+import com.reply.notesapp.ui.model.SignupUserResponse;
+import com.reply.notesapp.ui.dto.User;
 import com.reply.notesapp.entity.UserEntity;
-import com.reply.notesapp.dto.VerificationToken;
+import com.reply.notesapp.ui.dto.VerificationToken;
 import com.reply.notesapp.security.SecurityConstants;
 import com.reply.notesapp.service.EmailService;
 import com.reply.notesapp.service.UserService;
@@ -48,7 +48,7 @@ public class AuthRestService {
 				.parseClaimsJws(token.replace("Bearer ", ""));
 		String username = claims.getBody().getSubject();
 		Date expiration = claims.getBody().getExpiration();
-		User user = userService.findByUsername(username);
+		UserEntity user = userService.findEntityByUsername(username);
 		Map<String, Object> json = new HashMap<>();
 		json.put("id", user.getId());
 		json.put("username", user.getUsername());

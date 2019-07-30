@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.reply.notesapp.dto.Note;
+import com.reply.notesapp.ui.dto.Note;
 import com.reply.notesapp.service.NoteService;
 
 @RestController

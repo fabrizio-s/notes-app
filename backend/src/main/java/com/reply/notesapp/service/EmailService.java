@@ -7,17 +7,20 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import com.reply.notesapp.dto.SignupUserResponse;
-import com.reply.notesapp.dto.VerificationToken;
+import com.reply.notesapp.ui.model.SignupUserResponse;
+import com.reply.notesapp.ui.dto.VerificationToken;
 
 @Service
 public class EmailService {
-	
-	@Autowired
+
 	private JavaMailSender javaMailSender;
-	
-	@Autowired
 	private VerificationTokenService verificationTokenService;
+
+	@Autowired
+	public EmailService(JavaMailSender javaMailSender, VerificationTokenService verificationTokenService) {
+		this.javaMailSender = javaMailSender;
+		this.verificationTokenService = verificationTokenService;
+	}
 	
 	@Value("${spring.mail.username}")
 	private String email;
