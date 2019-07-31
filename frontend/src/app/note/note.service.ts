@@ -1,71 +1,71 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Note } from './note.model';
-import { Subject } from 'rxjs';
+import { Subject, Observable, throwError } from 'rxjs';
+import { tap, catchError } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class NoteService {
 
-    notes: Note[];
-    fetch = new Subject<void>();
-    note = new Subject<Note>();
-    error = new Subject<any>();
+    public successfullySavedNote = new Subject<Note>();
+    public successfullyUpdatedNote = new Subject<Note>();
+    public successfullyDeletedNote = new Subject<Note>();
+    public saveError = new Subject<any>();
+    public updateError = new Subject<any>();
+    public deleteError = new Subject<any>();
+    public fetchError = new Subject<any>();
 
     constructor(private http: HttpClient) { }
 
-    saveNote(note: Note) {
-        this.http.post<Note>('/rest/note', note).subscribe(
-            savedNote => {
-                this.note.next(savedNote);
-                this.notes.push(savedNote);
-            },
-            error => {
-                this.error.next(error);
-            }
-        );
-    }
-
-    updateNote(index: number, note: Note) {
-        this.http.put<Note>('/rest/note/' + note.id, note).subscribe(
-            updatedNote => {
-                if (this.notes[index].id === updatedNote.id) {
-                    this.notes[index].title = updatedNote.title;
-                    this.notes[index].body = updatedNote.body;
-                } else {
-                    this.fetchNotes();
+    saveNote(note: Note): Observable<Note> {
+        return this.http.post<Note>('/rest/note', note).pipe(
+            catchError(
+                error => {
+                    console.error(error);
+                    this.saveError.next(error);
+                    return throwError(error);
                 }
-            },
-            error => {
-                this.error.next(error);
-            }
+            ),
+            tap(savedNote => this.successfullySavedNote.next(savedNote))
         );
     }
 
-    fetchNotes() {
-        this.http.get<Note[]>('/rest/note').subscribe(
-            notes => {
-                this.notes = notes;
-                this.fetch.next();
-            },
-            error => {
-                this.error.next(error);
-            }
-        );
-    }
-
-    deleteNote(index: number, note: Note) {
-        this.http.delete<Note>('/rest/note/' + note.id).subscribe(
-            deletedNote => {
-                if (this.notes[index].id === deletedNote.id) {
-                    this.notes.splice(index, 1);
-                } else {
-                    this.fetchNotes();
+    updateNote(index: number, note: Note): Observable<Note> {
+        return this.http.put<Note>('/rest/note/' + note.id, note).pipe(
+            catchError(
+                error => {
+                    console.error(error);
+                    this.updateError.next(error);
+                    return throwError(error);
                 }
-                this.note.next(deletedNote);
-            },
-            error => {
-                this.error.next(error);
-            }
+            ),
+            tap(updatedNote => this.successfullyUpdatedNote.next(updatedNote))
+        );
+    }
+
+    deleteNote(index: number, note: Note): Observable<Note> {
+        return this.http.delete<Note>('/rest/note/' + note.id).pipe(
+            catchError(
+                error => {
+                    console.log('Inside Fetch catchError!');
+                    console.log(error);
+                    this.deleteError.next(error);
+                    return throwError(error);
+                }
+            ),
+            tap(deletedNote => this.successfullyDeletedNote.next(deletedNote))
+        );
+    }
+
+    fetchNotes(): Observable<Note[]> {
+        return this.http.get<Note[]>('/rest/note').pipe(
+            catchError(
+                error => {
+                    console.error(error);
+                    this.fetchError.next(error);
+                    return throwError(error);
+                }
+            )
         );
     }
 

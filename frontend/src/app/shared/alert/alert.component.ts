@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -8,9 +8,9 @@ import { Subscription } from 'rxjs';
 })
 export class AlertComponent {
 
-    @Input() message: string;
-    @Output() closeAlert = new EventEmitter<void>();
-    closeSub: Subscription;
+    @Input() public message: string;
+    @Output() public closeAlert = new EventEmitter<void>();
+    public closeSub: Subscription;
 
     onClose() {
         this.closeAlert.emit();

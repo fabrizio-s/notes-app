@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
-
 import { HomeComponent } from './home/home.component';
 import { AppRoutingModule } from './app-routing.module';
 import { SearchComponent } from './home/search/search.component';
@@ -20,6 +19,8 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { ModifyModalComponent } from './home/search/modify-modal/modify-modal.component';
 import { ReadModalComponent } from './home/search/read-modal/read-modal.component';
+import { StoreModule } from '@ngrx/store';
+import { notesReducer } from './note/store/notes.reducer';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { ReadModalComponent } from './home/search/read-modal/read-modal.componen
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
+    StoreModule.forRoot({ notes: notesReducer }),
     AngularFontAwesomeModule,
     MDBBootstrapModule.forRoot()
   ],

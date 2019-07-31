@@ -13,8 +13,8 @@ import { PlaceholderDirective } from 'src/app/shared/placeholder/placeholder.dir
 })
 export class LoginComponent implements OnInit, OnDestroy {
 
-    errorSub: Subscription;
-    alertFactory: ComponentFactory<AlertComponent>;
+    private errorSub: Subscription;
+    private alertFactory: ComponentFactory<AlertComponent>;
     @ViewChild(PlaceholderDirective, {static: false}) alertContainer: PlaceholderDirective;
 
     constructor(private authService: AuthService, private router: Router, private componentFactoryResolver: ComponentFactoryResolver) { }

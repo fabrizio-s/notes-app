@@ -1,11 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NoteService } from '../../note/note.service';
 import { Note } from '../../note/note.model';
-import { Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AuthService } from '../../auth/auth.service';
 import { MDBModalService } from 'angular-bootstrap-md';
 import { ModifyModalComponent } from './modify-modal/modify-modal.component';
 import { ReadModalComponent } from './read-modal/read-modal.component';
+import { Store } from '@ngrx/store';
+import * as NoteActions from '../../note/store/note.actions';
+import { finalize } from 'rxjs/operators';
 
 @Component({
     selector: 'app-search',
@@ -14,46 +17,46 @@ import { ReadModalComponent } from './read-modal/read-modal.component';
 })
 export class SearchComponent implements OnInit, OnDestroy {
 
-    userSub: Subscription;
-    fetchSub: Subscription;
-    deleteSub: Subscription;
-    errorSub: Subscription;
-    enableFilterByTitle = false;
-    enableFilterByAuthor = false;
-    filteredTitle = '';
-    filteredAuthor = '';
-    isLoading = false;
-    deleteSuccess = false;
-    error = null;
+    private subscriptions = [];
+    private enableFilterByTitle = false;
+    private enableFilterByAuthor = false;
+    private filteredTitle = '';
+    private filteredAuthor = '';
+    private isLoading = false;
+    private deleteSuccess = false;
+    private error = null;
+    private notes$: Observable<{ notes: Note[] }>;
 
-    constructor(private authService: AuthService, private noteService: NoteService, private mDBModalService: MDBModalService) { }
+    constructor(private authService: AuthService,
+                private noteService: NoteService,
+                private mDBModalService: MDBModalService,
+                private store: Store<{notes: {notes: Note[]}}>) { }
 
     ngOnInit() {
-        this.userSub = this.authService.user.subscribe(
-            user => {
-                if (user) {
-                    this.noteService.fetchNotes();
+        this.notes$ = this.store.select('notes');
+        this.subscriptions.push(
+            this.noteService.successfullyDeletedNote.subscribe(
+                deletedNote => {
+                    this.deleteSuccess = true;
+                    setTimeout(() => this.deleteSuccess = false, 4000);
                 }
-            }
+            )
         );
-        this.fetchSub = this.noteService.fetch.subscribe(
-            () => {
-                this.isLoading = false;
-            }
+        this.subscriptions.push(
+            this.noteService.fetchError.subscribe(
+                error => {
+                    this.error = error;
+                    setTimeout(() => this.error = null, 4000);
+                }
+            )
         );
-        this.deleteSub = this.noteService.note.subscribe(
-            deletedNote => {
-                this.deleteSuccess = true;
-                setTimeout(() => this.deleteSuccess = false, 4000);
-                this.isLoading = false;
-            }
-        );
-        this.errorSub = this.noteService.error.subscribe(
-            error => {
-                this.error = error;
-                setTimeout(() => this.error = null, 4000);
-                this.isLoading = false;
-            }
+        this.subscriptions.push(
+            this.noteService.deleteError.subscribe(
+                error => {
+                    this.error = error;
+                    setTimeout(() => this.error = null, 4000);
+                }
+            )
         );
     }
 
@@ -90,20 +93,21 @@ export class SearchComponent implements OnInit, OnDestroy {
 
     deleteNote(index: number, note: Note) {
         if (confirm('Are you sure you want to delete this note?')) {
-            this.noteService.deleteNote(index, note);
+            this.noteService.deleteNote(index, note).subscribe(
+                deletedNote => this.store.dispatch(new NoteActions.DeleteNote({index, note: deletedNote}))
+            );
         }
     }
 
     refresh() {
         this.isLoading = true;
-        this.noteService.fetchNotes();
+        this.noteService.fetchNotes().pipe(finalize(() => this.isLoading = false)).subscribe(
+            notes => this.store.dispatch(new NoteActions.FetchNotes(notes))
+        );
     }
 
     ngOnDestroy() {
-        this.deleteSub.unsubscribe();
-        this.errorSub.unsubscribe();
-        this.userSub.unsubscribe();
-        this.fetchSub.unsubscribe();
+        this.subscriptions.forEach(sub => sub.unsubscribe());
     }
 
 }

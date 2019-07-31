@@ -10,11 +10,12 @@ import { Token } from '../user/token.model';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-    user = new BehaviorSubject<User>(null);
     private tokenExpirationTimer: any;
-    error = new Subject<any>();
+    public user = new BehaviorSubject<User>(null);
+    public error = new Subject<any>();
 
-    constructor(private http: HttpClient, private router: Router) { }
+    constructor(private http: HttpClient,
+                private router: Router) { }
 
     login(credentials: {username: string, password: string}) {
         this.http.get<AuthUserResponse>('/api/authenticate?username=' + credentials.username + '&password=' + credentials.password)
@@ -46,7 +47,7 @@ export class AuthService {
         this.tokenExpirationTimer = null;
     }
 
-    autologin() {
+    autologin(): boolean {
         const userData: {
             id: number,
             username: string,
@@ -59,7 +60,7 @@ export class AuthService {
         } = JSON.parse(localStorage.getItem('userData'));
 
         if (!userData) {
-            return;
+            return false;
         }
 
         const user = new User(userData.id,
@@ -71,6 +72,9 @@ export class AuthService {
         if (user.token) {
             this.user.next(user);
             this.autologout(user.token.expirationDate.getTime() - Date.now());
+            return true;
+        } else {
+            return false;
         }
     }
 

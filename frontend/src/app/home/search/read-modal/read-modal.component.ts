@@ -7,6 +7,6 @@ import { MDBModalRef } from 'angular-bootstrap-md';
 })
 export class ReadModalComponent {
 
-  constructor(public modalRef: MDBModalRef) { }
+  constructor(private modalRef: MDBModalRef) { }
 
 }
