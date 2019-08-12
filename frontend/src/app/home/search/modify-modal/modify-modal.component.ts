@@ -1,11 +1,11 @@
-import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MDBModalRef } from 'angular-bootstrap-md';
 import { Note } from 'src/app/note/note.model';
 import { NgForm } from '@angular/forms';
 import { NoteService } from 'src/app/note/note.service';
 import { Store } from '@ngrx/store';
 import * as NoteActions from '../../../note/store/note.actions';
-import { Subscription } from 'rxjs';
+import * as fromApp from 'src/app/store/app.reducer';
 
 @Component({
   selector: 'app-modify-modal',
@@ -23,7 +23,7 @@ export class ModifyModalComponent implements OnInit, OnDestroy {
 
   constructor(private noteService: NoteService,
               private modalRef: MDBModalRef,
-              private store: Store<{ notes: { notes: Note[] } }>) { }
+              private store: Store<fromApp.AppState>) { }
 
   ngOnInit() {
     this.defaultTitle = this.note.title;
@@ -54,9 +54,7 @@ export class ModifyModalComponent implements OnInit, OnDestroy {
       body: form.value.body,
     };
     this.noteService.updateNote(this.index, note).subscribe(
-      updatedNote => {
-        this.store.dispatch(new NoteActions.UpdateNote({ index: this.index, note: updatedNote }));
-      }
+      updatedNote => this.store.dispatch(new NoteActions.UpdateNote({ index: this.index, note: updatedNote }))
     );
   }
 

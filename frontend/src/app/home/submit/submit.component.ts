@@ -5,6 +5,9 @@ import { Note } from '../../note/note.model';
 import { AuthService } from '../../auth/auth.service';
 import { Store } from '@ngrx/store';
 import * as NoteActions from '../../note/store/note.actions';
+import * as fromApp from 'src/app/store/app.reducer';
+import { map } from 'rxjs/operators';
+import { User } from 'src/app/user/user.model';
 
 @Component({
     selector: 'app-submit',
@@ -13,6 +16,7 @@ import * as NoteActions from '../../note/store/note.actions';
 })
 export class SubmitComponent implements OnInit, OnDestroy {
 
+    private user: User = null;
     private subscriptions = [];
     private error = null;
     private saveSuccess = false;
@@ -20,9 +24,10 @@ export class SubmitComponent implements OnInit, OnDestroy {
 
     constructor(private authService: AuthService,
                 private noteService: NoteService,
-                private store: Store<{notes: {notes: Note[]}}>) { }
+                private store: Store<fromApp.AppState>) { }
 
     ngOnInit() {
+        this.subscriptions.push(this.store.select('auth').pipe(map(state => state.user)).subscribe(user => this.user = user));
         this.subscriptions.push(
             this.noteService.successfullySavedNote.subscribe(
                 savedNote => {
@@ -45,12 +50,10 @@ export class SubmitComponent implements OnInit, OnDestroy {
     submit(form: NgForm) {
         const note: Note = {
             title: form.value.title,
-            user: this.authService.user.getValue(),
+            user: this.user,
             body: form.value.body,
         };
-        this.noteService.saveNote(note).subscribe(
-            savedNote => this.store.dispatch(new NoteActions.AddNote(note))
-        );
+        this.noteService.saveNote(note).subscribe(savedNote => this.store.dispatch(new NoteActions.AddNote(savedNote)));
     }
 
     ngOnDestroy() {

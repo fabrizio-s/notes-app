@@ -1,10 +1,15 @@
 import * as NoteActions from './note.actions';
+import { Note } from '../note.model';
 
-const initialState = {
+export interface State {
+    notes: Note[];
+}
+
+const initialState: State = {
     notes: []
 };
 
-export function notesReducer(state = initialState, action: NoteActions.AnyAction) {
+export function notesReducer(state: State = initialState, action: NoteActions.AnyAction) {
     switch (action.type) {
         case NoteActions.ADD_NOTE:
             return {

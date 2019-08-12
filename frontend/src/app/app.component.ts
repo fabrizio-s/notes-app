@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from './auth/auth.service';
 import { NoteService } from './note/note.service';
 import { Store } from '@ngrx/store';
-import { Note } from './note/note.model';
-import * as NoteActions from './note/store/note.actions';
+import * as fromApp from 'src/app/store/app.reducer';
+import * as AuthActions from './auth/store/auth.actions';
 
 @Component({
     selector: 'app-root',
@@ -11,12 +11,10 @@ import * as NoteActions from './note/store/note.actions';
 })
 export class AppComponent implements OnInit {
 
-    constructor(private authService: AuthService,
-                private noteService: NoteService,
-                private store: Store<{notes: {notes: Note[]}}>) { }
+    constructor(private store: Store<fromApp.AppState>) { }
 
     ngOnInit() {
-        this.authService.autologin();
+        this.store.dispatch(new AuthActions.AutoLogin());
     }
 
 }

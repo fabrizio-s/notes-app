@@ -1,10 +1,10 @@
 import { Action } from '@ngrx/store';
 import { Note } from '../note.model';
 
-export const ADD_NOTE = 'ADD_NOTE';
-export const FETCH_NOTES = 'FETCH_NOTES';
-export const UPDATE_NOTE = 'UPDATE_NOTE';
-export const DELETE_NOTE = 'DELETE_NOTE';
+export const ADD_NOTE = '[Notes] Add Note';
+export const FETCH_NOTES = '[Notes] Fetch Notes';
+export const UPDATE_NOTE = '[Notes] Update Note';
+export const DELETE_NOTE = '[Notes] Delete Note';
 
 export class AddNote implements Action {
     readonly type = ADD_NOTE;

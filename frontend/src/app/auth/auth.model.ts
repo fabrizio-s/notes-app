@@ -8,3 +8,10 @@ export interface AuthUserResponse {
         duration: number;
     };
 }
+
+export interface SignUpUserResponse {
+    id: number;
+    username: string;
+    email: string;
+    enabled: boolean;
+}

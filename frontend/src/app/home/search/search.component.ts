@@ -8,7 +8,9 @@ import { ModifyModalComponent } from './modify-modal/modify-modal.component';
 import { ReadModalComponent } from './read-modal/read-modal.component';
 import { Store } from '@ngrx/store';
 import * as NoteActions from '../../note/store/note.actions';
-import { finalize } from 'rxjs/operators';
+import { finalize, map } from 'rxjs/operators';
+import * as fromApp from 'src/app/store/app.reducer';
+import { User } from 'src/app/user/user.model';
 
 @Component({
     selector: 'app-search',
@@ -25,15 +27,17 @@ export class SearchComponent implements OnInit, OnDestroy {
     private isLoading = false;
     private deleteSuccess = false;
     private error = null;
-    private notes$: Observable<{ notes: Note[] }>;
+    private notes$: Observable<Note[]>;
+    private user: User = null;
 
     constructor(private authService: AuthService,
                 private noteService: NoteService,
                 private mDBModalService: MDBModalService,
-                private store: Store<{notes: {notes: Note[]}}>) { }
+                private store: Store<fromApp.AppState>) { }
 
     ngOnInit() {
-        this.notes$ = this.store.select('notes');
+        this.notes$ = this.store.select('notes').pipe(map(state => state.notes));
+        this.subscriptions.push(this.store.select('auth').pipe(map(state => state.user)).subscribe(user => this.user = user));
         this.subscriptions.push(
             this.noteService.successfullyDeletedNote.subscribe(
                 deletedNote => {
@@ -108,6 +112,14 @@ export class SearchComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.subscriptions.forEach(sub => sub.unsubscribe());
+    }
+
+    private isUserAdmin(): boolean {
+        return !!this.user && this.user.roles.includes('ROLE_ADMIN');
+    }
+
+    private isUserNoteOwner(note: Note): boolean {
+        return !!this.user && this.user.id === note.user.id;
     }
 
 }

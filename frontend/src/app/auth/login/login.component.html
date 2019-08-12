@@ -1,14 +1,24 @@
 <div class="container">
-    <h4>Login</h4>
-    <ng-template appPlaceholder></ng-template>
-    <form class="mb-1" (ngSubmit)="login(loginForm)" #loginForm="ngForm">
-        <div class="form-group col-sm-8 col-md-6 col-lg-4 mt-2">
-            <input type="text" name="username" class="form-control" placeholder="Username" #username="ngModel" ngModel>
+    <div [hidden]="isLoading">
+        <ng-template appPlaceholder></ng-template>
+    </div>
+    <div *ngIf="!isLoading; else loading">
+        <h4>Login</h4>
+        <form class="mb-1" (ngSubmit)="login(loginForm)" #loginForm="ngForm">
+            <div class="form-group col-sm-8 col-md-6 col-lg-4 mt-2">
+                <input type="text" name="username" class="form-control" placeholder="Username" #username="ngModel" ngModel>
+            </div>
+            <div class="form-group col-sm-8 col-md-6 col-lg-4 mt-2">
+                <input type="password" name="password" class="form-control" placeholder="Password" #password="ngModel"
+                    ngModel>
+            </div>
+            <button type="submit" class="btn btn-primary ml-3">Log In</button>
+        </form>
+        <a href="javascript:void(0);" (click)="navigateSignup()" class="ml-3"><small>Don't have an account? Sign up!</small></a>
+    </div>
+    <ng-template #loading>
+        <div style="text-align: center;">
+            <app-loading-spinner></app-loading-spinner>
         </div>
-        <div class="form-group col-sm-8 col-md-6 col-lg-4 mt-2">
-            <input type="password" name="password" class="form-control" placeholder="Password" #password="ngModel" ngModel>
-        </div>
-        <button type="submit" class="btn btn-primary ml-3">Log In</button>
-    </form>
-    <a href="javascript:void(0);" (click)="navigateSignup()" class="ml-3"><small>Don't have an account? Sign up!</small></a>
+    </ng-template>
 </div>

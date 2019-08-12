@@ -20,7 +20,10 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { ModifyModalComponent } from './home/search/modify-modal/modify-modal.component';
 import { ReadModalComponent } from './home/search/read-modal/read-modal.component';
 import { StoreModule } from '@ngrx/store';
-import { notesReducer } from './note/store/notes.reducer';
+import * as fromApp from './store/app.reducer';
+import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
+import { EffectsModule } from '@ngrx/effects';
+import { AuthEffect } from './auth/store/auth.effects';
 
 @NgModule({
   declarations: [
@@ -36,14 +39,16 @@ import { notesReducer } from './note/store/notes.reducer';
     ReadModalComponent,
     ShortenPipe,
     NoteFilter,
-    PlaceholderDirective
+    PlaceholderDirective,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    StoreModule.forRoot({ notes: notesReducer }),
+    StoreModule.forRoot(fromApp.appReducer),
+    EffectsModule.forRoot([AuthEffect]),
     AngularFontAwesomeModule,
     MDBBootstrapModule.forRoot()
   ],

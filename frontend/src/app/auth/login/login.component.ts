@@ -1,10 +1,12 @@
-import { Component, ViewChild, OnInit, OnDestroy, ComponentFactoryResolver, ComponentFactory } from '@angular/core';
-import { AuthService } from 'src/app/auth/auth.service';
+import { Component, ViewChild, OnInit, OnDestroy, ComponentFactoryResolver } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AlertComponent } from 'src/app/shared/alert/alert.component';
 import { PlaceholderDirective } from 'src/app/shared/placeholder/placeholder.directive';
+import { Store } from '@ngrx/store';
+import * as fromApp from 'src/app/store/app.reducer';
+import * as AuthActions from 'src/app/auth/store/auth.actions';
 
 @Component({
     selector: 'app-login',
@@ -13,36 +15,40 @@ import { PlaceholderDirective } from 'src/app/shared/placeholder/placeholder.dir
 })
 export class LoginComponent implements OnInit, OnDestroy {
 
-    private errorSub: Subscription;
-    private alertFactory: ComponentFactory<AlertComponent>;
+    private isLoading = false;
+    private subscriptions: Subscription[] = [];
     @ViewChild(PlaceholderDirective, {static: false}) alertContainer: PlaceholderDirective;
 
-    constructor(private authService: AuthService, private router: Router, private componentFactoryResolver: ComponentFactoryResolver) { }
+    constructor(private store: Store<fromApp.AppState>,
+                private componentFactoryResolver: ComponentFactoryResolver,
+                private router: Router) { }
 
     ngOnInit() {
-        this.alertFactory = this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
-        this.errorSub = this.authService.error.subscribe(
-            error => {
-                this.showErrorAlert(error.message);
-            }
+        this.subscriptions.push(
+            this.store.select('auth').subscribe(
+                state => {
+                    this.isLoading = state.loading;
+                    if (!!state.error) {
+                        this.showErrorAlert(state.error);
+                    }
+                }
+            )
         );
     }
 
-    ngOnDestroy() {
-        this.errorSub.unsubscribe();
-    }
-
     login(form: NgForm) {
-        this.authService.login(form.value);
+        this.store.dispatch(new AuthActions.Login({username: form.value.username, password: form.value.password}));
+        form.reset();
     }
 
     navigateSignup() {
+        this.store.dispatch(new AuthActions.ClearError());
         this.router.navigate(['signup']);
     }
 
     private showErrorAlert(message: string) {
-        const alertViewContainerRef = this.alertContainer.viewContainerRef;
-        const component = alertViewContainerRef.createComponent(this.alertFactory);
+        const alertFactory = this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
+        const component = this.alertContainer.viewContainerRef.createComponent(alertFactory);
         component.instance.message = message;
         component.instance.closeSub = component.instance.closeAlert.subscribe(
             () => {
@@ -50,6 +56,10 @@ export class LoginComponent implements OnInit, OnDestroy {
                 component.destroy();
             }
         );
+    }
+
+    ngOnDestroy() {
+        this.subscriptions.forEach(sub => sub.unsubscribe());
     }
 
 }

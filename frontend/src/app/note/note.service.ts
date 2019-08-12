@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Note } from './note.model';
 import { Subject, Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
@@ -47,7 +47,6 @@ export class NoteService {
         return this.http.delete<Note>('/rest/note/' + note.id).pipe(
             catchError(
                 error => {
-                    console.log('Inside Fetch catchError!');
                     console.log(error);
                     this.deleteError.next(error);
                     return throwError(error);

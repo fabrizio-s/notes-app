@@ -1,4 +1,4 @@
 <div class="container">
-    <p>Welcome, <strong>{{ authService.user.getValue().username }}</strong>!</p>
-    <button class="btn btn-primary" (click)="authService.logout()">Log Out</button>
+    <p>Welcome, <strong>{{ user.username }}</strong>!</p>
+    <button class="btn btn-primary" (click)="logout()">Log Out</button>
 </div>

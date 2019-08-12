@@ -25,12 +25,12 @@
     <div class="container" *ngIf="!isLoading; else loading">
         <div class="row">
             <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-lg-4 col-xl-4"
-                *ngFor="let note of ((notes$ | async).notes | noteFilter:enableFilterByTitle:filteredTitle:enableFilterByAuthor:filteredAuthor); let i = index">
+                *ngFor="let note of ((notes$ | async) | noteFilter:enableFilterByTitle:filteredTitle:enableFilterByAuthor:filteredAuthor); let i = index">
                 <div class="card bg-light mb-3">
                     <div class="card-header">
                         <em><i>{{ note.title | shorten:24 }}</i></em>
                         <button type="button" class="close" aria-label="Delete note."
-                            *ngIf="authService.isNoteOwner(note) || authService.isAdmin()"
+                            *ngIf="isUserNoteOwner(note) || isUserAdmin()"
                             (click)="deleteNote(i, note)">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -41,13 +41,15 @@
                     <div class="btn-group" role="group" aria-label="Note actions.">
                         <button type="button" mdbBtn color="default" rounded="true" mdbWavesEffect (click)="readNote(note)">Read</button>
                         <button type="button" class="btn btn-light" rounded="true" mdbBtn (click)="updateNote(i, note)"
-                            *ngIf="authService.isNoteOwner(note) || authService.isAdmin()">Modify</button>
+                            *ngIf="isUserNoteOwner(note) || isUserAdmin()">Modify</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <ng-template #loading>
-        <p>Loading...</p>
+        <div style="text-align: center;">
+            <app-loading-spinner></app-loading-spinner>
+        </div>
     </ng-template>
 </div>
