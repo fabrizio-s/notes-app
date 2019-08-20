@@ -33,7 +33,7 @@ export function notesReducer(state: State = initialState, action: NoteActions.An
                 ...state,
                 notes: state.notes.filter(
                     // tslint:disable-next-line: no-shadowed-variable
-                    (note, index) => index !== action.payload.index
+                    note => note.id !== action.payload.note.id
                 )
             };
         case NoteActions.FETCH_NOTES:
