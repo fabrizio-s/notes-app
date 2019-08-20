@@ -1,3 +1,7 @@
+export class Token {
+    constructor(public value: string, public expirationDate: Date) { }
+}
+
 export interface AuthUserResponse {
     id: number;
     username: string;

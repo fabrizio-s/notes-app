@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import * as fromApp from 'src/app/store/app.reducer';
+import * as fromApp from 'src/app/app.reducer';
 import * as AuthActions from 'src/app/auth/store/auth.actions';
 
 @Component({
@@ -28,7 +28,7 @@ export class SignupComponent {
 
     navigateLogin() {
         this.store.dispatch(new AuthActions.ClearError());
-        this.router.navigate(['login']);
+        this.router.navigate(['auth', 'login']);
     }
 
 }

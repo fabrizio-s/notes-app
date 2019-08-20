@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import * as fromApp from 'src/app/store/app.reducer';
+import * as fromApp from 'src/app/app.reducer';
 import { Store } from '@ngrx/store';
-import { User } from 'src/app/user/user.model';
+import { User } from 'src/app/shared/model/user.model';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/auth.service';

@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { User } from 'src/app/user/user.model';
+import { User } from 'src/app/shared/model/user.model';
 
 export const LOGIN = '[Auth] Login';
 export const AUTHENTICATE_SUCCESS = '[Auth] Authenticate Success';

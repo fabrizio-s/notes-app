@@ -3,9 +3,9 @@ import * as AuthActions from './auth.actions';
 import { switchMap, catchError, map, tap } from 'rxjs/operators';
 import { AuthUserResponse, SignUpUserResponse } from '../auth.model';
 import { HttpClient } from '@angular/common/http';
-import { of, Observable, throwError } from 'rxjs';
-import { User } from 'src/app/user/user.model';
-import { Token } from 'src/app/user/token.model';
+import { of, Observable } from 'rxjs';
+import { User } from 'src/app/shared/model/user.model';
+import { Token } from 'src/app/auth/auth.model';
 import { Injectable } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
@@ -51,7 +51,7 @@ export class AuthEffect {
     @Effect({ dispatch: false })
     redirect = this.actions$.pipe(
         ofType(AuthActions.AUTHENTICATE_SUCCESS),
-        tap(() => this.router.navigate(['/welcome']))
+        tap(() => this.router.navigate(['/home/welcome']))
     );
 
     @Effect({ dispatch: false })
@@ -60,7 +60,7 @@ export class AuthEffect {
         tap(() => {
             this.authService.clearLogoutTimer();
             localStorage.removeItem('userData');
-            this.router.navigate(['/login']);
+            this.router.navigate(['/auth/login']);
         })
     );
 

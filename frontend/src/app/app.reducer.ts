@@ -1,5 +1,5 @@
-import * as fromNotes from '../note/store/notes.reducer';
-import * as fromAuth from '../auth/store/auth.reducer';
+import * as fromNotes from './home/note/store/notes.reducer';
+import * as fromAuth from './auth/store/auth.reducer';
 import { ActionReducerMap } from '@ngrx/store';
 
 export interface AppState {

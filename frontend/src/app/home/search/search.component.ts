@@ -1,16 +1,16 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NoteService } from '../../note/note.service';
-import { Note } from '../../note/note.model';
+import { NoteService } from '../note/note.service';
+import { Note } from '../note/note.model';
 import { Observable } from 'rxjs';
 import { AuthService } from '../../auth/auth.service';
 import { MDBModalService } from 'angular-bootstrap-md';
 import { ModifyModalComponent } from './modify-modal/modify-modal.component';
 import { ReadModalComponent } from './read-modal/read-modal.component';
 import { Store } from '@ngrx/store';
-import * as NoteActions from '../../note/store/note.actions';
+import * as NoteActions from '../note/store/note.actions';
 import { finalize, map } from 'rxjs/operators';
-import * as fromApp from 'src/app/store/app.reducer';
-import { User } from 'src/app/user/user.model';
+import * as fromApp from 'src/app/app.reducer';
+import { User } from 'src/app/shared/model/user.model';
 
 @Component({
     selector: 'app-search',

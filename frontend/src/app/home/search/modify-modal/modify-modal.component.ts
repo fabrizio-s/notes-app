@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MDBModalRef } from 'angular-bootstrap-md';
-import { Note } from 'src/app/note/note.model';
+import { Note } from 'src/app/home/note/note.model';
 import { NgForm } from '@angular/forms';
-import { NoteService } from 'src/app/note/note.service';
+import { NoteService } from 'src/app/home/note/note.service';
 import { Store } from '@ngrx/store';
-import * as NoteActions from '../../../note/store/note.actions';
-import * as fromApp from 'src/app/store/app.reducer';
+import * as NoteActions from '../../note/store/note.actions';
+import * as fromApp from 'src/app/app.reducer';
 
 @Component({
   selector: 'app-modify-modal',

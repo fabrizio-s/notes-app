@@ -1,4 +1,4 @@
-import { User } from 'src/app/user/user.model';
+import { User } from 'src/app/shared/model/user.model';
 import * as AuthActions from './auth.actions';
 
 export interface State {

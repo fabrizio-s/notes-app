@@ -1,4 +1,4 @@
-import { Token } from './token.model';
+import { Token } from '../../auth/auth.model';
 
 export class User {
 

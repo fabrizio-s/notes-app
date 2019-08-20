@@ -1,4 +1,4 @@
-import { User } from '../user/user.model';
+import { User } from '../../shared/model/user.model';
 
 export interface Note {
     id?: number;

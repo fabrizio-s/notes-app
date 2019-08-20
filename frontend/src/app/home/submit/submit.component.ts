@@ -1,13 +1,13 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { NoteService } from '../../note/note.service';
-import { Note } from '../../note/note.model';
+import { NoteService } from '../note/note.service';
+import { Note } from '../note/note.model';
 import { AuthService } from '../../auth/auth.service';
 import { Store } from '@ngrx/store';
-import * as NoteActions from '../../note/store/note.actions';
-import * as fromApp from 'src/app/store/app.reducer';
+import * as NoteActions from '../note/store/note.actions';
+import * as fromApp from 'src/app/app.reducer';
 import { map } from 'rxjs/operators';
-import { User } from 'src/app/user/user.model';
+import { User } from 'src/app/shared/model/user.model';
 
 @Component({
     selector: 'app-submit',

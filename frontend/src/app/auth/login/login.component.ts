@@ -2,10 +2,10 @@ import { Component, ViewChild, OnInit, OnDestroy, ComponentFactoryResolver } fro
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { AlertComponent } from 'src/app/shared/alert/alert.component';
-import { PlaceholderDirective } from 'src/app/shared/placeholder/placeholder.directive';
+import { AlertComponent } from 'src/app/shared/component/alert/alert.component';
+import { PlaceholderDirective } from 'src/app/shared/directive/placeholder.directive';
 import { Store } from '@ngrx/store';
-import * as fromApp from 'src/app/store/app.reducer';
+import * as fromApp from 'src/app/app.reducer';
 import * as AuthActions from 'src/app/auth/store/auth.actions';
 
 @Component({
@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     navigateSignup() {
         this.store.dispatch(new AuthActions.ClearError());
-        this.router.navigate(['signup']);
+        this.router.navigate(['auth', 'signup']);
     }
 
     private showErrorAlert(message: string) {
