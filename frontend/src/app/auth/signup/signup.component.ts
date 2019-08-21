@@ -1,9 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
-import * as fromApp from 'src/app/app.reducer';
 import * as AuthActions from 'src/app/auth/store/auth.actions';
+import { Store } from '@ngxs/store';
 
 @Component({
     selector: 'app-signup',
@@ -14,7 +13,7 @@ export class SignupComponent {
 
     @ViewChild('signupForm', {static: false}) signupForm: NgForm;
 
-    constructor(private store: Store<fromApp.AppState>,
+    constructor(private store: Store,
                 private router: Router) { }
 
     signup(form: NgForm) {

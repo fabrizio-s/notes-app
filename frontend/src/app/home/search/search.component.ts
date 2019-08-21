@@ -6,11 +6,12 @@ import { AuthService } from '../../auth/auth.service';
 import { MDBModalService } from 'angular-bootstrap-md';
 import { ModifyModalComponent } from './modify-modal/modify-modal.component';
 import { ReadModalComponent } from './read-modal/read-modal.component';
-import { Store } from '@ngrx/store';
 import * as NoteActions from '../note/store/note.actions';
 import { finalize, map } from 'rxjs/operators';
-import * as fromApp from 'src/app/app.reducer';
 import { User } from 'src/app/shared/model/user.model';
+import { Select, Store } from '@ngxs/store';
+import { NoteState } from '../note/store/note.state';
+import { AuthState } from 'src/app/auth/store/auth.state';
 
 @Component({
     selector: 'app-search',
@@ -18,6 +19,9 @@ import { User } from 'src/app/shared/model/user.model';
     styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit, OnDestroy {
+
+    @Select(NoteState.notes) private notes$: Observable<Note[]>;
+    @Select(AuthState.user) private user$: Observable<User>;
 
     private subscriptions = [];
     private enableFilterByTitle = false;
@@ -27,17 +31,15 @@ export class SearchComponent implements OnInit, OnDestroy {
     private isLoading = false;
     private deleteSuccess = false;
     private error = null;
-    private notes$: Observable<Note[]>;
     private user: User = null;
 
     constructor(private authService: AuthService,
                 private noteService: NoteService,
                 private mDBModalService: MDBModalService,
-                private store: Store<fromApp.AppState>) { }
+                private store: Store) { }
 
     ngOnInit() {
-        this.notes$ = this.store.select('notes').pipe(map(state => state.notes));
-        this.subscriptions.push(this.store.select('auth').pipe(map(state => state.user)).subscribe(user => this.user = user));
+        this.subscriptions.push(this.user$.subscribe(user => this.user = user));
         this.subscriptions.push(
             this.noteService.successfullyDeletedNote.subscribe(
                 deletedNote => {
@@ -98,7 +100,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     deleteNote(index: number, note: Note) {
         if (confirm('Are you sure you want to delete this note?')) {
             this.noteService.deleteNote(index, note).subscribe(
-                deletedNote => this.store.dispatch(new NoteActions.DeleteNote({index, note: deletedNote}))
+                deletedNote => this.store.dispatch(new NoteActions.DeleteNote(deletedNote))
             );
         }
     }

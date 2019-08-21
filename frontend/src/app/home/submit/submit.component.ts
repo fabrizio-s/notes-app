@@ -2,12 +2,11 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NoteService } from '../note/note.service';
 import { Note } from '../note/note.model';
-import { AuthService } from '../../auth/auth.service';
-import { Store } from '@ngrx/store';
 import * as NoteActions from '../note/store/note.actions';
-import * as fromApp from 'src/app/app.reducer';
-import { map } from 'rxjs/operators';
 import { User } from 'src/app/shared/model/user.model';
+import { Select, Store } from '@ngxs/store';
+import { AuthState } from 'src/app/auth/store/auth.state';
+import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-submit',
@@ -16,18 +15,19 @@ import { User } from 'src/app/shared/model/user.model';
 })
 export class SubmitComponent implements OnInit, OnDestroy {
 
+    @Select(AuthState.user) private user$: Observable<User>;
+
     private user: User = null;
     private subscriptions = [];
     private error = null;
     private saveSuccess = false;
     @ViewChild('form', {static: true}) private form: NgForm;
 
-    constructor(private authService: AuthService,
-                private noteService: NoteService,
-                private store: Store<fromApp.AppState>) { }
+    constructor(private noteService: NoteService,
+                private store: Store) { }
 
     ngOnInit() {
-        this.subscriptions.push(this.store.select('auth').pipe(map(state => state.user)).subscribe(user => this.user = user));
+        this.subscriptions.push(this.user$.subscribe(user => this.user = user));
         this.subscriptions.push(
             this.noteService.successfullySavedNote.subscribe(
                 savedNote => {

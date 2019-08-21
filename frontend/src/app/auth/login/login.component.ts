@@ -1,12 +1,12 @@
 import { Component, ViewChild, OnInit, OnDestroy, ComponentFactoryResolver } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { AlertComponent } from 'src/app/shared/component/alert/alert.component';
 import { PlaceholderDirective } from 'src/app/shared/directive/placeholder.directive';
-import { Store } from '@ngrx/store';
-import * as fromApp from 'src/app/app.reducer';
 import * as AuthActions from 'src/app/auth/store/auth.actions';
+import { Store, Select } from '@ngxs/store';
+import { AuthState } from '../store/auth.state';
 
 @Component({
     selector: 'app-login',
@@ -15,21 +15,21 @@ import * as AuthActions from 'src/app/auth/store/auth.actions';
 })
 export class LoginComponent implements OnInit, OnDestroy {
 
-    private isLoading = false;
     private subscriptions: Subscription[] = [];
+    @Select(AuthState.loading) private loading$: Observable<boolean>;
+    @Select(AuthState.error) private error$: Observable<any>;
     @ViewChild(PlaceholderDirective, {static: false}) alertContainer: PlaceholderDirective;
 
-    constructor(private store: Store<fromApp.AppState>,
+    constructor(private store: Store,
                 private componentFactoryResolver: ComponentFactoryResolver,
                 private router: Router) { }
 
     ngOnInit() {
         this.subscriptions.push(
-            this.store.select('auth').subscribe(
-                state => {
-                    this.isLoading = state.loading;
-                    if (!!state.error) {
-                        this.showErrorAlert(state.error);
+            this.error$.subscribe(
+                error => {
+                    if (!!error) {
+                        this.showErrorAlert(error);
                     }
                 }
             )

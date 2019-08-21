@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NoteService } from './note/note.service';
-import { Store } from '@ngrx/store';
 import * as NoteActions from './note/store/note.actions';
-import * as fromApp from 'src/app/app.reducer';
+import { Store } from '@ngxs/store';
 
 @Component({
     selector: 'app-home',
@@ -12,7 +11,7 @@ import * as fromApp from 'src/app/app.reducer';
 export class HomeComponent implements OnInit {
 
     constructor(private noteService: NoteService,
-                private store: Store<fromApp.AppState>) { }
+                private store: Store) { }
 
     ngOnInit() {
         this.noteService.fetchNotes().subscribe(notes => this.store.dispatch(new NoteActions.FetchNotes(notes)));

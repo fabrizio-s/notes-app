@@ -1,11 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import * as fromApp from 'src/app/app.reducer';
-import { Store } from '@ngrx/store';
 import { User } from 'src/app/shared/model/user.model';
-import { Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { AuthService } from 'src/app/auth/auth.service';
+import { Subscription, Observable } from 'rxjs';
 import * as AuthActions from 'src/app/auth/store/auth.actions';
+import { Store, Select } from '@ngxs/store';
+import { AuthState } from 'src/app/auth/store/auth.state';
 
 @Component({
     selector: 'app-welcome',
@@ -14,14 +12,15 @@ import * as AuthActions from 'src/app/auth/store/auth.actions';
 })
 export class WelcomeComponent implements OnInit, OnDestroy {
 
+    @Select(AuthState.user) private user$: Observable<User>;
+
     private user: User = null;
     private subscriptions: Subscription[] = [];
 
-    constructor(private store: Store<fromApp.AppState>,
-                private authService: AuthService) { }
+    constructor(private store: Store) { }
 
     ngOnInit() {
-        this.subscriptions.push(this.store.select('auth').pipe(map(state => state.user)).subscribe(user => this.user = user));
+        this.subscriptions.push(this.user$.subscribe(user => this.user = user));
     }
 
     private logout() {

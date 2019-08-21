@@ -2,6 +2,17 @@ export class Token {
     constructor(public value: string, public expirationDate: Date) { }
 }
 
+export interface LoginCredentials {
+    username: string;
+    password: string;
+}
+
+export interface SignUpCredentials {
+    username: string;
+    email: string;
+    password: string;
+}
+
 export interface AuthUserResponse {
     id: number;
     username: string;
